@@ -42,22 +42,20 @@ rails s -b 0.0.0.0　　＊bindオプションを使えば、リスニングす�
 10. 起動したアプリ内にて、fruitデータの新規追加・更新・削除操作OK
 ***
 ＜バージョン＞
-Ruby：3.1.2
-Rails：7.0.4
-bundler：2.3.14
+Ruby：3.1.2  Rails：7.0.4  bundler：2.3.14
 ***
 
 ### 遭遇したエラー ###
-**config/database.ymlがない**
+**config/database.ymlがない**  
 ファイル名を「/database.yml.sample」→「database.yml」に変更
 
-**MySQLサーバーつながらないエラー**
- 「config/database.yml」の socket: /tmp/mysql.sock　→　socket: /var/lib/mysql/mysql.sock に変更
+**MySQLサーバーつながらないエラー**  
+「config/database.yml」の socket: /tmp/mysql.sock　→　socket: /var/lib/mysql/mysql.sock に変更
  
-**「このサイトにアクセスできません」エラー**
+**「このサイトにアクセスできません」エラー** 
 Cloud9のEC2にセキュリティーグループにインバウンドルールを設定　→　SSH、HTTP、HTTPS、8080を開放
 
-**アセットパイプラインに「application.css」が見つからないエラー**
+**アセットパイプラインに「application.css」が見つからないエラー**  
 ①下記コマンドでyarnインストール→　1.22.19入る
 ```bash
 npm install --global yarn
@@ -120,8 +118,8 @@ sassは『波括弧{}』は使わずにインデント使ってネスト（入�
 Rails 5から、railsのみで対応できるようになりました（rakeが不要になりました）。
 ```
 
-アプリデプロイする時の作業を再確認できたのと
-主にRails について勉強になりました！
+アプリデプロイする時の作業を再確認できたのと  
+主にRails について勉強になりました！  
 余裕があったら、簡単なアプリを自作して理解を深めたいです！
 
 
