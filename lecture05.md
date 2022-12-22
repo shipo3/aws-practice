@@ -25,9 +25,32 @@ rails s -b 0.0.0.0
 ＜エビデンス＞
 ![組み込みサーバーを使って](images/rails.png)
 
-## この作業から学んだこと ##
+### この作業から学んだこと ###
 * MySQLが入らない時、wgetを使ってインストールする方法
 * database.yml記載の意味
 * credential管理による環境変数の設定の仕方  
  （結局、/credentials.yml.enc復号化できなかったので時間あったら再挑戦したいです。）
+
+## サーバー/アプリケーションを分けて動かす ##
+1. Nginxをインストール
+2. Nginxの権限を変更
+3. Unicornのインストール
+4. Nginxを再起動
+```bash
+sudo service nginx restart
+```
+5. Unicornを起動
+```bash
+bundle exec unicorn_rails -l 3000
+```  
+↓  
+アプリが操作できる
+
+＜エビデンス＞
+![分けて動かす](images/unicorn.png)
+
+### この作業から学んだこと ###
+* 改めてLinuxコマンドが学び直せた
+* viエディタの使い方　便利！と思えるようになった。
+* listenポートを指定しないとアクセスできなかったのが少し不思議。。
 
