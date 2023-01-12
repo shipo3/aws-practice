@@ -59,5 +59,14 @@ rails s -b 0.0.0.0  ＊bindオプションでリスニングするIPを指定で
 * pumaで起動することの意味　
 　https://style.potepan.com/articles/34157.html#Ruby_on_RailsWeb
 
+### 遭遇したエラー ###
+* `-bash: rbenv: command not found`が表示され、rbenvコマンドが使えない
+  →　`$ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile`を抜いていたのでEC2を作成しなおして最初から実施
+* bundle installが途中で止まる
+  →　EC2のボリュームが10GBだと進まなかった為、20GBに変更
+* MySQLパスワードが初期値のままだと進めなかったので、RDSと同じパスに変更
+* アプリ起動できたが、DBにアクセスできない「Please note that YAML must be consistently indented using spaces.」
+  →　database.ymlの記載ミス
+
 
 
