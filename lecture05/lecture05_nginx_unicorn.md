@@ -137,3 +137,38 @@ $ ps -ef | grep unicorn | grep -v grep
 →　「13: Permission denied」などと表示されている場合は、nginxのプロセスを実行しているユーザーとunicornを実行しているユーザーが異なるため、unicorn.sockへのアクセス権限でファイルへのアクセスが拒否されている   
 →　Nginxのworkerプロセス起動ユーザーをsockファイルへのアクセス権があるユーザーへ変更1して解消
 4. Nginx＋Unicornで起動でき、アプリにアクセスできたが表示が崩れている（CSSが適用されてない)  
+- [参考情報](https://www.sejuku.net/blog/100015)をやってみる
+  → ディベロッパーツール内に「Console」にcssとjsの404エラー  
+- jsとcss関係のファイル構成をCloud9を比較してみる  
+  →　app/javascript/stylesheets  内に「application.js」がない。。他は同じ  
+- webpacker入れてなかったので　`rails webpacker:install` してみる  
+  →　rails --tasks にないから知らない。。と出る  
+- Gemfileに「gem 'webpacker', '~> 3.0’」追記するか？  
+  →　「webpackerは必要なし」の回答いただく  
+  → アプリにあらかじめあった「package.json」には「webpack": "^5.74.0",」書いてある  
+- CSSファイルが反映されない場合以下が足りない[記事](https://motomichi-works.hatenablog.com/entry/2020/08/09/002839)があったがすでに記載されていた
+
+```
+http {
+  〜略〜
+  include /etc/nginx/mime.types;
+  default_type application/octet-stream;
+  〜略〜
+}
+```
+- 「/var/log/nginx/access.log」を確認する　`sudo tail /var/log/nginx/access.log`  
+  → エラーはなし。。　アクセスしているIPアドレスも合っている
+- 「/var/log/nginx/error.log」を確認する　`sudo tail /var/log/nginx/error.log`  
+  →　assetsファイル「/home/ec2-user/raisetech-live8-sample-app/public/assets/application.debug・・・」が開けないエラーが表示されている  
+- 追加した設定ファイル「rails.conf」に「root　 /home/ec2-user/raisetech-live8-sample-app/public;」追記してみるが同じ
+
+```
+[error] 3427#3427: *15 open() "/home/ec2-user/raisetech-live8-sample-app/public/assets/application.debug-40b03126ee30fb95eacf50ff9ae89564fae3eb9c9c55f9a4fad50e0d56ec8e83.js" failed (2: No such file or directory)
+```
+- 「nginx.conf」のserver部分をコメントアウトしてみる  
+  →　状況変わらず。。アプリ開けて追加もできるがスタイルが適用されない
+- 追加した設定ファイル「rails.conf」を削除して「nginx.conf」に今回のserver設定を追記したが同じ  
+  →「nginx.conf」のassets 部分をコメントアウトしてスタイル適用された   
+  →　コメントアウトを外しても表示OKになった！
+5. `$ bundle exec unicorn_rails -c config/unicorn.rb -D`の後「master failed to start, check stderr log for details」となる  
+ →　`/home/ec2-user/raisetech-live8-sample-app/log/unicorn.log`を確認すると「Please check your database configuration and ensure there is a valid connection to your database.」RDSが起動されていなかった
