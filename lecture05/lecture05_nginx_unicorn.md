@@ -112,7 +112,7 @@ $ ps -ef | grep unicorn | grep -v grep
 11. ブラウザにて「http://EC2のパブリックIPアドレス」 にアクセスする
 
 ＜エビデンス＞
-![分けて動かす](images/unicorn.png)
+![サーバーを分けて動かす](../images/nginx_unicorn.png)
 
 ### この作業から学んだこと ###
 * 改めてLinuxコマンドが学び直せた
