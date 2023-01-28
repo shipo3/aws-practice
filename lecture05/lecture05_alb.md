@@ -20,7 +20,8 @@
 10. ALBのDNSをコピーしてブラウザからアクセスする
 
 ＜エビデンス＞
-![サーバーを分けて動かす](../images/nginx_unicorn.png)
+![ALB経由でアクセス](../images/ALB.png)
+![ヘルスチェック](../images/HealthCheck.png)
 
 ### この作業から学んだこと ###
 * ALBの作成方法
