@@ -1,0 +1,83 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: RDS create
+
+Parameters:
+  DBMasterUserName:
+    Default: root
+    Type: String
+  DBMasterUserPassword:
+    Default: kagiu310Fuwauu8+
+    Type: String
+  EngineVersion:
+    Default: 8.0.28
+    Type: String
+  StorageType:
+    Default: gp2
+    Type: String
+  InstanceClass:
+    Default: db.t3.micro
+    Type: String
+  StorageSize:
+    Default: 20
+    Type: String
+
+Resources:
+# ------------------------------------------------------------#
+# RDS Security Groups
+# ------------------------------------------------------------#
+  RDSSg1:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: connect with ssh and mysql
+      VpcId: !ImportValue CFn-vpc
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          SourceSecurityGroupId: !ImportValue CFn-ec2-sg
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          SourceSecurityGroupId: !ImportValue CFn-ec2-sg
+      Tags:
+        - Key: Name
+          Value: CFn-rds-sg     
+# ------------------------------------------------------------#
+# DB SubnetGroup
+# ------------------------------------------------------------#
+  DBSubnetGroup1:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: CFn DB SubnetGroup
+      DBSubnetGroupName: CFn-rds-sng
+      SubnetIds:
+        - !ImportValue CFn-private-subnet-1a
+        - !ImportValue CFn-private-subnet-1c
+      Tags:
+        - Key: Name
+          Value: CFn-rds-sng      
+# ------------------------------------------------------------#
+# RDS Create
+# ------------------------------------------------------------#
+  RDSInstance1:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      Engine: mysql
+      EngineVersion: 8.0.28
+      DBInstanceClass: db.t3.micro
+      AllocatedStorage: 20
+      StorageType: gp2
+      DBName: CFn_rds
+      MasterUsername: root
+      MasterUserPassword: kagiu310Fuwauu8+
+      VPCSecurityGroups:
+        - !Ref RDSSg1
+      DBSubnetGroupName: !Ref DBSubnetGroup1
+      MultiAZ: "false"
+      AvailabilityZone: ap-northeast-1a
+      Tags:
+        - Key: Name
+          Value: CFn-rds  
+
+        
+    
