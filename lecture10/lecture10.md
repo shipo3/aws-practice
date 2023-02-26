@@ -264,15 +264,15 @@ VPCSecurityGroups:
 ⇒　DB名に大文字が含まれていたので小文字にして解消
 
 ## エビデンス ##
-*Allスタック*
+*Allスタック*  
 ![Allスタック](../images/CFn-stacks.png)  
-*Networkスタック*
+*Networkスタック*  
 ![Network](../images/CFn-Network.png)  
-*EC2-S3スタック*
+*EC2-S3スタック*  
 ![EC2-S3](../images/CFn-EC2-S3.png)  
-*ALBスタック*
+*ALBスタック*  
 ![ALB](../images/CFn-ALB.png)  
-*RDSスタック*
+*RDSスタック*  
 ![RDS](../images/CFn-RDS.png)
 
 ## その他豆知識 ##
