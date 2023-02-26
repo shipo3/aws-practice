@@ -1,0 +1,148 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: VPC & Subnet create
+
+Resources: 
+# ------------------------------------------------------------#
+# VPC Create
+# ------------------------------------------------------------#
+  VPC1:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: CFn-vpc
+# ------------------------------------------------------------#
+# Subnet Create
+# ------------------------------------------------------------#
+  PubSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: ap-northeast-1a
+      VpcId: !Ref VPC1
+      CidrBlock: 10.0.0.0/20
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: CFn-public-subnet-1a
+  PriSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: ap-northeast-1a
+      VpcId: !Ref VPC1
+      CidrBlock: 10.0.128.0/20
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: CFn-private-subnet-1a
+  PubSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: ap-northeast-1c
+      VpcId: !Ref VPC1
+      CidrBlock: 10.0.16.0/20
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: CFn-public-subnet-1c
+  PriSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: ap-northeast-1c
+      VpcId: !Ref VPC1
+      CidrBlock: 10.0.144.0/20
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: CFn-private-subnet-1c
+# ------------------------------------------------------------#
+# RouteTable Create
+# ------------------------------------------------------------#
+  PubRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC1
+      Tags:
+        - Key: Name
+          Value: CFn-public-rtb
+  PriRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC1
+      Tags:
+        - Key: Name
+          Value: CFn-private-rtb
+
+  PubSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PubSubnet1
+      RouteTableId: !Ref PubRouteTable
+  PriSubnet1CRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PriSubnet1
+      RouteTableId: !Ref PriRouteTable
+  PubSubnet2CRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PubSubnet2
+      RouteTableId: !Ref PubRouteTable
+  PriSubnet2CRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PriSubnet2
+      RouteTableId: !Ref PriRouteTable    
+# ------------------------------------------------------------#
+# InternetGateway Create
+# ------------------------------------------------------------#
+  InternetGateway:
+    Type: "AWS::EC2::InternetGateway"
+    Properties:
+      Tags:
+        - Key: Name
+          Value: CFn-igw
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC1
+      InternetGatewayId: !Ref InternetGateway
+  Route:
+    Type: AWS::EC2::Route
+    DependsOn: InternetGateway
+    Properties:
+      RouteTableId: !Ref PubRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway    
+# ------------------------------------------------------------#
+# Outputs
+# ------------------------------------------------------------#        
+Outputs:
+  StackVPC:
+    Description: The ID of the VPC
+    Value: !Ref VPC1
+    Export:
+      Name: CFn-vpc
+
+  StackPubSubnet1:
+    Description: The ID of the VPC Subnet
+    Value: !Ref PubSubnet1
+    Export:
+      Name: CFn-public-subnet-1a
+  StackPriSubnet1:
+    Description: The ID of the VPC Subnet
+    Value: !Ref PriSubnet1
+    Export:
+      Name: CFn-private-subnet-1a
+  StackPubSubnet2:
+    Description: The ID of the VPC Subnet
+    Value: !Ref PubSubnet2
+    Export:
+      Name: CFn-public-subnet-1c
+  StackPriSubnet2:
+    Description: The ID of the VPC Subnet
+    Value: !Ref PriSubnet2
+    Export:
+      Name: CFn-private-subnet-1c

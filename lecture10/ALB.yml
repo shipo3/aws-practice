@@ -1,0 +1,83 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: ALB & SecurityGroup create
+
+Parameters:
+  SSHLocation:
+    Description: IP address range that can be used to SSH to the EC2 instances
+    Type: String
+    MinLength: '9'
+    MaxLength: '18'
+    Default: 0.0.0.0/0
+    AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
+    ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
+  HealthCheckPath:
+    Description : Webserver HealthCheckPath
+    Default: "/"
+    Type: String
+
+Resources: 
+# ------------------------------------------------------------#
+# ALB Srcurity Groups
+# ------------------------------------------------------------#
+  ALBSg1:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: ALB access
+      VpcId: !ImportValue CFn-vpc
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: CFn-alb-sg    
+# ------------------------------------------------------------#
+# ALB Create
+# ------------------------------------------------------------#
+  ALB1:
+    Type: 'AWS::ElasticLoadBalancingV2::LoadBalancer'
+    Properties:
+      Subnets:
+        - !ImportValue CFn-public-subnet-1a
+        - !ImportValue CFn-public-subnet-1c
+      SecurityGroups:
+        - !Ref ALBSg1
+      Tags:
+        - Key: Name
+          Value: CFn-alb  
+  ALBTargetGroup:
+    Type: 'AWS::ElasticLoadBalancingV2::TargetGroup'
+    Properties:
+      HealthCheckIntervalSeconds: 30
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 5
+      HealthCheckPath: !Ref HealthCheckPath
+      Port: 80
+      Protocol: HTTP
+      UnhealthyThresholdCount: 2
+      VpcId: !ImportValue CFn-vpc
+      Targets:
+        - Id: !ImportValue CFn-ec2
+          Port: 80
+  ALBListener:
+    Type: 'AWS::ElasticLoadBalancingV2::Listener'
+    Properties:
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref ALBTargetGroup
+      LoadBalancerArn: !Ref ALB1
+      Port: '80'
+      Protocol: HTTP
+# ------------------------------------------------------------#
+# Outputs
+# ------------------------------------------------------------#  
+Outputs:
+  StackALB:
+    Value: !Ref ALB1
+    Export:
+      Name: CFn-alb
