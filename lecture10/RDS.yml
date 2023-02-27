@@ -2,10 +2,10 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: RDS create
 
 Parameters:
-  DBMasterUserName:
+  MasterUserName:
     Default: root
     Type: String
-  DBMasterUserPassword:
+  MasterUserPassword:
     Default: kagiu310Fuwauu8+
     Type: String
   EngineVersion:
@@ -68,8 +68,8 @@ Resources:
       AllocatedStorage: !Ref StorageSize
       StorageType: !Ref StorageType
       DBName: CFn_rds
-      MasterUsername: !Ref DBMasterUserName
-      MasterUserPassword: !Ref DBMasterUserPassword
+      MasterUsername: !Ref MasterUserName
+      MasterUserPassword: !Ref MasterUserPassword
       VPCSecurityGroups:
         - !Ref RDSSg1
       DBSubnetGroupName: !Ref DBSubnetGroup1
