@@ -20,7 +20,7 @@ Resources:
   PubSubnet1:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: ap-northeast-1a
+      AvailabilityZone: !Sub ${AWS::Region}a
       VpcId: !Ref VPC1
       CidrBlock: 10.0.0.0/20
       MapPublicIpOnLaunch: true
@@ -30,7 +30,7 @@ Resources:
   PriSubnet1:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: ap-northeast-1a
+      AvailabilityZone: !Sub ${AWS::Region}a
       VpcId: !Ref VPC1
       CidrBlock: 10.0.128.0/20
       MapPublicIpOnLaunch: true
@@ -40,7 +40,7 @@ Resources:
   PubSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: ap-northeast-1c
+      AvailabilityZone: !Sub ${AWS::Region}c
       VpcId: !Ref VPC1
       CidrBlock: 10.0.16.0/20
       MapPublicIpOnLaunch: true
@@ -50,7 +50,7 @@ Resources:
   PriSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: ap-northeast-1c
+      AvailabilityZone: !Sub ${AWS::Region}c
       VpcId: !Ref VPC1
       CidrBlock: 10.0.144.0/20
       MapPublicIpOnLaunch: true
@@ -111,7 +111,6 @@ Resources:
       InternetGatewayId: !Ref InternetGateway
   Route:
     Type: AWS::EC2::Route
-    DependsOn: InternetGateway
     Properties:
       RouteTableId: !Ref PubRouteTable
       DestinationCidrBlock: 0.0.0.0/0
