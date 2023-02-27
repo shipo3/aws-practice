@@ -63,18 +63,18 @@ Resources:
     Type: AWS::RDS::DBInstance
     Properties:
       Engine: mysql
-      EngineVersion: 8.0.28
-      DBInstanceClass: db.t3.micro
-      AllocatedStorage: 20
-      StorageType: gp2
+      EngineVersion: !Ref EngineVersion
+      DBInstanceClass: !Ref InstanceClass
+      AllocatedStorage: !Ref StorageSize
+      StorageType: !Ref StorageType
       DBName: CFn_rds
-      MasterUsername: root
-      MasterUserPassword: kagiu310Fuwauu8+
+      MasterUsername: !Ref DBMasterUserName
+      MasterUserPassword: !Ref DBMasterUserPassword
       VPCSecurityGroups:
         - !Ref RDSSg1
       DBSubnetGroupName: !Ref DBSubnetGroup1
       MultiAZ: "false"
-      AvailabilityZone: ap-northeast-1a
+      AvailabilityZone: !Sub ${AWS::Region}a
       Tags:
         - Key: Name
           Value: CFn-rds  
