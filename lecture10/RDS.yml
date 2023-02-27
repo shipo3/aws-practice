@@ -3,9 +3,11 @@ Description: RDS create
 
 Parameters:
   MasterUserName:
+    NoEcho: 'true'
     Default: root
     Type: String
   MasterUserPassword:
+    NoEcho: 'true'
     Default: kagiu310Fuwauu8+
     Type: String
   EngineVersion:
