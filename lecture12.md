@@ -57,7 +57,7 @@ $ cfn-lint テンプレート名.yml
 
 ## エビデンス ##
 *実行結果*  
-![実行結果](../images/CircleCIーresult.png)  
+![実行結果](images/CircleCIーresult.png)  
 
 ## 感想 ##
 - ずっと気になってたCircleCIが体験出来ました!
