@@ -202,10 +202,13 @@ describe file('/etc/nginx/nginx.conf') do
 end
 ```
 ## エビデンス ##
-*実行結果*  
-![Nginxインストール前](images/Serverspec-result-1.png)  
+*Nginxインストール前*  
+![Nginxインストール前](images/Serverspec-result-1.png)   
+*Nginxインストール後*  
 ![Nginxインストール後](images/Serverspec-result-2.png)  
+*Nginx起動後*  
 ![Nginx起動後](images/Serverspec-result-3.png)  
+*ファイルチェック*  
 ![ファイルチェック](images/Serverspec-result-4.png) 
 
 ## 遭遇したエラー ##
