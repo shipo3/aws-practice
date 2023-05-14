@@ -1,17 +1,51 @@
 version: 2.1
 orbs:
   python: circleci/python@2.0.3
+  aws-cli: circleci/aws-cli@3.1
 jobs:
-  cfn-lint:
-    executor: python/default
+  #cfn-lint:
+    #executor: python/default
+    #steps:
+      #- checkout
+      #- run: pip install cfn-lint
+      #- run:
+         # name: run cfn-lint
+          #command: |
+            #cfn-lint -i W3002 -t lecture10/*.yml
+            
+  configure-role-arn:
+    executor: aws-cli/default
     steps:
       - checkout
-      - run: pip install cfn-lint
-      - run:
-          name: run cfn-lint
-          command: |
-            cfn-lint -i W3002 -t lecture10/*.yml
+      - aws-cli/setup:
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-region: AWS_DEFAULT_REGION
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+      - aws-cli/role-arn-setup:
+          profile-name: new-profile
+          role-arn: arn:aws:iam::123456789012:role/example-role
+          source-profile: default
+      - run: >-
+          aws sts assume-role --role-arn
+          "arn:aws:iam::123456789012:role/example-role" --role-session-name
+          AWSCLI-Session
+            
+  #execute-cfn:
+    #executor: 
+    #steps:
+      #- checkout
+      #- run:
+          #name: Create CloudFormation stack
+         # command: |
+           # aws cloudformation create-stack --stack-name ci-Stack --template-body file://lecture10/*.yml
+            
+            
+            
+            
+            
 workflows:
   raisetech:
     jobs:
-      - cfn-lint
+      #- cfn-lint
+      - configure-role-arn
+      #- execute-cfn
