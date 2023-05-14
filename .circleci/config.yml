@@ -13,7 +13,7 @@ jobs:
           #command: |
             #cfn-lint -i W3002 -t lecture10/*.yml
             
-  configure-role-arn:
+  execut-cfn:
     executor: aws-cli/default
     steps:
       - checkout
@@ -21,23 +21,11 @@ jobs:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-region: AWS_DEFAULT_REGION
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-      - aws-cli/role-arn-setup:
-          profile-name: new-profile
-          role-arn: arn:aws:iam::123456789012:role/example-role
-          source-profile: default
-      - run: >-
-          aws sts assume-role --role-arn
-          "arn:aws:iam::123456789012:role/example-role" --role-session-name
-          AWSCLI-Session
-            
-  #execute-cfn:
-    #executor: 
-    #steps:
-      #- checkout
-      #- run:
-          #name: Create CloudFormation stack
-         # command: |
-           # aws cloudformation create-stack --stack-name ci-Stack --template-body file://lecture10/*.yml
+      - run:
+          name: deploy cfn
+          command: |
+            set -x
+            aws cloudformation deploy --stack-name stack-for-circleci --template-file lecture10/*.yml
             
             
             
@@ -47,5 +35,5 @@ workflows:
   raisetech:
     jobs:
       #- cfn-lint
-      - configure-role-arn
+      - execut-cfn
       #- execute-cfn
