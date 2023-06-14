@@ -25,7 +25,7 @@ jobs:
           name: deploy cfn
           command: |
             set -x
-            aws cloudformation deploy --stack-name stack-for-circleci --template-file cloudformation/Network.yml --template-file cloudformation/ALB.yml --template-file cloudformation/EC2_S3.yml --template-file cloudformation/RDS.yml
+            aws cloudformation deploy --stack-name stack-for-circleci --template-file cloudformation/Network.yml --template-file cloudformation/ALB.yml --template-file cloudformation/EC2_S3.yml 
             
             
             
