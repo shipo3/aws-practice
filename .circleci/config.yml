@@ -27,8 +27,9 @@ jobs:
             set -x
             aws cloudformation deploy --stack-name circleci-vpc --template-file cloudformation/Network.yml
             aws cloudformation deploy --stack-name circleci-ec2 --template-file cloudformation/EC2_S3.yml
-          
-            
+            aws cloudformation deploy --stack-name circleci-rds --template-file cloudformation/RDS.ym
+            aws cloudformation deploy --stack-name circleci-alb--template-file cloudformation/ALB.ym
+             
             
             
             
