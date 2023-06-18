@@ -30,7 +30,18 @@ jobs:
             aws cloudformation deploy --stack-name circleci-rds --template-file cloudformation/RDS.ym
             aws cloudformation deploy --stack-name circleci-alb--template-file cloudformation/ALB.ym
              
-            
+  execute-ansible:
+    executor: ansible-playbook/default
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "05:63:33:68:59:f9:6e:c7:6d:fe:58:aa:d7:cf:fa:6f"
+      - ansible-playbook/install:
+          version: 2.13.5
+      - ansible-playbook/playbook:
+          playbook: ansible/playbook.yml
+          playbook-options: '-u ec2user -i ansible/inventory --private_key ~/.ssh/shipo4%'
+          
             
             
 workflows:
@@ -38,4 +49,5 @@ workflows:
     jobs:
       - cfn-lint
       - execut-cfn
+      - execut-ansible
       

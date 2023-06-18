@@ -1,0 +1,37 @@
+# 対象の指定(インベントリファイルで指定した名前)
+- hosts: server
+
+  # 管理者権限で実行
+  become: true
+
+  # 以下に実際の操作を記述していく
+  tasks:
+
+    # パッケージの更新
+    - name: updated yum
+      yum:
+        name: "*"
+        state: latest
+    
+    # 言語設定の変更
+    - name: set LANG=ja_JP.UTF-8 in /etc/locale.conf
+      lineinfile:
+        dest: /etc/locale.conf
+        regexp: "^LANG="
+        line: "LANG=ja_JP.UTF-8"
+        backup: yes
+
+    # httpdのインストール
+    - name: installed httpd
+      yum:
+        name: httpd
+        state: installed
+      become: yes
+
+    # httpdの起動・自動起動設定
+    - name: httpd booted and auto boot conf
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+      become: yes
