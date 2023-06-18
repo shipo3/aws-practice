@@ -13,7 +13,7 @@ jobs:
           command: |
             cfn-lint -i W3002 -t cloudformation/*.yml
             
-  execut-cfn:
+  execute-cfn:
     executor: aws-cli/default
     steps:
       - checkout
@@ -48,6 +48,6 @@ workflows:
   raisetech:
     jobs:
       - cfn-lint
-      - execut-cfn
-      - execut-ansible
+      - execute-cfn
+      - execute-ansible
       
