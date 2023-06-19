@@ -28,8 +28,8 @@ jobs:
             set -x
             aws cloudformation deploy --stack-name circleci-vpc --template-file cloudformation/Network.yml
             aws cloudformation deploy --stack-name circleci-ec2 --template-file cloudformation/EC2_S3.yml
-            aws cloudformation deploy --stack-name circleci-rds --template-file cloudformation/RDS.ym
-            aws cloudformation deploy --stack-name circleci-alb--template-file cloudformation/ALB.ym
+            aws cloudformation deploy --stack-name circleci-rds --template-file cloudformation/RDS.yml
+            aws cloudformation deploy --stack-name circleci-alb--template-file cloudformation/ALB.yml
              
   execute-ansible:
     executor: ansible-playbook/default
@@ -38,7 +38,7 @@ jobs:
           fingerprints:
             - "05:63:33:68:59:f9:6e:c7:6d:fe:58:aa:d7:cf:fa:6f"
       - ansible-playbook/install:
-          version: 2.13.5
+          version: 2.9.23
       - ansible-playbook/playbook:
           playbook: ansible/playbook.yml
           playbook-options: '-u ec2user -i ansible/inventory --private_key ~/.ssh/shipo4%'
