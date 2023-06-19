@@ -50,5 +50,5 @@ workflows:
     jobs:
       - cfn-lint
       - execute-cfn
-      - execute-ansible
+      - execute-
       
