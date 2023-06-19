@@ -41,7 +41,7 @@ jobs:
           version: 2.9.23
       - ansible-playbook/playbook:
           playbook: ansible/playbook.yml
-          playbook-options: '-u ec2user -i ansible/inventory --private_key ~/.ssh/shipo4%'
+          playbook-options: '-i ansible/inventory'
           
             
             
