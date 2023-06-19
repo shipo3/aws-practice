@@ -38,7 +38,7 @@ jobs:
           fingerprints:
             - "05:63:33:68:59:f9:6e:c7:6d:fe:58:aa:d7:cf:fa:6f"
       - ansible-playbook/install:
-          version: 2.13.5
+          version: 2.9.23
       - ansible-playbook/playbook:
           playbook: ansible/playbook.yml
           playbook-options: '-u ec2user -i ansible/inventory --private_key ~/.ssh/shipo4%'
