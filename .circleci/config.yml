@@ -40,7 +40,7 @@ jobs:
       - ansible-playbook/install:
           version: 2.9.23
       - ansible-playbook/playbook:
-          playbook: ansible/playbook.yml
+          playbook: /home/ec2-user/environment/aws-practice/ansible/playbook.yml
           playbook-options: '-i ansible/inventory'
           
             
