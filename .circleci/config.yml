@@ -30,7 +30,7 @@ jobs:
             aws cloudformation deploy --stack-name circleci-ec2 --template-file cloudformation/EC2_S3.yml
             aws cloudformation deploy --stack-name circleci-rds --template-file cloudformation/RDS.yml
             aws cloudformation deploy --stack-name circleci-alb --template-file cloudformation/ALB.yml
-             
+          
   execute-ansible:
     executor: ansible-playbook/default
     steps:
@@ -39,9 +39,12 @@ jobs:
             - "05:63:33:68:59:f9:6e:c7:6d:fe:58:aa:d7:cf:fa:6f"
       - ansible-playbook/install:
           version: 2.9.23
+      - run:
+          name: pwd
+          command: pwd    
       - ansible-playbook/playbook:
           playbook: /home/ec2-user/environment/aws-practice/ansible/playbook.yml
-          playbook-options: '-i ansible/inventory'
+          playbook-options: '-i ansible/inventory --syntax-check'
           
             
             
