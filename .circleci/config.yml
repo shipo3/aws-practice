@@ -43,8 +43,8 @@ jobs:
           name: pwd
           command: pwd    
       - ansible-playbook/playbook:
-          playbook: /home/ec2-user/environment/aws-practice/ansible/playbook.yml
-          playbook-options: '-i ansible/inventory --syntax-check'
+          playbook: .ansible-playbook-circleci/playbook.yml
+          playbook-options: '-i .ansible-playbook-circleci/inventory --syntax-check'
           
             
             
