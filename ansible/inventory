@@ -1,6 +1,6 @@
 # ターゲットノード
 [server]
-52.196.120.193
+13.112.249.53
 
 [server:vars]
 ansible_ssh_port=22
