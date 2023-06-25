@@ -42,6 +42,7 @@ jobs:
       - run:
           name: pwd
           command: pwd 
+      - run:
           name: ls
           command: ls -a
       #- ansible-playbook/playbook:
