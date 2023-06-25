@@ -41,10 +41,12 @@ jobs:
           version: 2.9.23
       - run:
           name: pwd
-          command: pwd    
-      - ansible-playbook/playbook:
-          playbook: .ansible-playbook-circleci/playbook.yml
-          playbook-options: '-i .ansible-playbook-circleci/inventory --syntax-check'
+          command: pwd 
+          name: ls
+          command: ls -a
+      #- ansible-playbook/playbook:
+         #playbook: ansible/playbook.yml
+          #playbook-options: '-i ansible/inventory --syntax-check'
           
             
             
