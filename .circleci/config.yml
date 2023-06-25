@@ -43,8 +43,11 @@ jobs:
           name: pwd
           command: pwd 
       - run:
-          name: ls
-          command: ls -a
+          name: cd 
+          command: cd /home/circleci/project
+      - run:
+          name: ls 
+          command: ls
       #- ansible-playbook/playbook:
          #playbook: ansible/playbook.yml
           #playbook-options: '-i ansible/inventory --syntax-check'
