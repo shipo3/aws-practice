@@ -127,3 +127,11 @@
     git:
       repo: https://github.com/yuta-ushijima/raisetech-live8-sample-app.git
       dest: .
+      
+  - name: Change directory
+    shell: cd raisetech-live8-sample-app
+
+  - name: Install Bundler
+    command: gem install bundler
+     args:
+       chdir: raisetech-live8-sample-app
