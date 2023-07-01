@@ -133,5 +133,5 @@
 
   - name: Install Bundler
     command: gem install bundler
-     args:
-       chdir: raisetech-live8-sample-app
+    args:
+      chdir: raisetech-live8-sample-app
