@@ -122,3 +122,8 @@
     with_items:
       - mysql-community-devel
       - mysql-community-server
+      
+  - name: Clone repository
+    git:
+      repo: https://github.com/yuta-ushijima/raisetech-live8-sample-app.git
+      dest: .
