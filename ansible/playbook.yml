@@ -1,6 +1,6 @@
 ---
 - hosts: server
-  became: true
+  become: true
   tasks:
   - name: package update
     yum:
