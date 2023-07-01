@@ -26,10 +26,14 @@
         - libxslt-devel 
       state: present
       
+  - name: Add AWS repository for Node.js
+    shell: "curl -sL https://rpm.nodesource.com/setup_14.x | sudo bash -"
+    
   - name: Install Node.js
     yum:
       name: nodejs
       state: present
+      update_cache: yes
       
   - name: Install Yarn
     yum:
