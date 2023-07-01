@@ -97,3 +97,20 @@
       state: present
       executable: /home/{{ ansible_user }}/.rbenv/shims/gem
     become_user: "{{ ansible_user }}"
+  
+  - name: Download MySQL repository configuration file
+    command: wget https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
+
+  - name: Install MySQL repository
+    command: rpm -ivh mysql80-community-release-el7-3.noarch.rpm
+
+  - name: Install MySQL server
+    yum:
+      name: mysql-server
+      state: present
+
+  - name: Start MySQL service
+    service:
+      name: mysqld
+      state: started
+      enabled: yes
