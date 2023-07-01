@@ -68,3 +68,9 @@
       insertbefore: '^export PATH'
     args:
         state: present   
+        
+  - name: Clone ruby-build repository
+    git:
+ 　    repo: "https://github.com/rbenv/ruby-build.git"
+      dest: "~/.rbenv/plugins/ruby-build"
+      version: master
