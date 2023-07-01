@@ -8,22 +8,22 @@
       state: least
       
   - name: Install required packages
-      yum:
-        name:
-          - gcc-c++
-          - make
-          - patch
-          - git
-          - curl
-          - zlib-devel
-          - openssl-devel
-          - ImageMagick-devel
-          - readline-devel
-          - libcurl-devel
-          - libffi-devel
-          - libicu-devel
-          - libxml2-devel
-          - libxslt-devel 
-        state: present
+    yum:
+      name:
+        - gcc-c++
+        - make
+        - patch
+        - git
+        - curl
+        - zlib-devel
+        - openssl-devel
+        - ImageMagick-devel
+        - readline-devel
+        - libcurl-devel
+        - libffi-devel
+        - libicu-devel
+        - libxml2-devel
+        - libxslt-devel 
+      state: present
 
     
