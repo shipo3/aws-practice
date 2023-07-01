@@ -116,9 +116,9 @@
       enabled: yes
       
   - name: Install MySQL Community Development Packages
-      yum:
-        name: "{{ item }}"
-        state: present
-      with_items:
-        - mysql-community-devel
-        - mysql-community-server
+    yum:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - mysql-community-devel
+      - mysql-community-server
