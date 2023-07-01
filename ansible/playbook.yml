@@ -82,3 +82,18 @@
     environment:
       PATH: "/home/{{ ansible_user }}/.rbenv/bin:/home/{{ ansible_user }}/.rbenv/shims:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       RBENV_ROOT: "/home/{{ ansible_user }}/.rbenv"
+      
+  - name: Install Bundler
+    gem:
+      name: bundler
+      state: latest
+      executable: /home/{{ ansible_user }}/.rbenv/shims/gem
+    become_user: "{{ ansible_user }}"
+
+  - name: Install Rails 7.0.4
+    gem:
+      name: rails
+      version: 7.0.4
+      state: present
+      executable: /home/{{ ansible_user }}/.rbenv/shims/gem
+    become_user: "{{ ansible_user }}"
