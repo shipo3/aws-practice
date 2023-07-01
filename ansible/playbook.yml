@@ -139,7 +139,7 @@
   - name: Rename database.yml.sample
     command: mv config/database.yml.sample config/database.yml
 
-　- name: Read database.yml
+  - name: Read database.yml
     slurp:
       src: /raisetech-live8-sample-app/config/database.yml
     register: database_yml
