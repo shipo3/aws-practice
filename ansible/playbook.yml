@@ -75,7 +75,7 @@
       dest: "~/.rbenv/plugins/ruby-build"
       version: master
       
-   - name: Install Ruby 3.1.2 using ruby-build
+  - name: Install Ruby 3.1.2 using ruby-build
     shell: rbenv install --skip-existing 3.1.2
     args:
       executable: /bin/bash
