@@ -30,5 +30,10 @@
     yum:
       name: nodejs
       state: present
+      
+  - name: Install Yarn
+    yum:
+      name: yarn
+      state: present
 
     
