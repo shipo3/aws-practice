@@ -49,6 +49,12 @@ jobs:
       - ansible-playbook/playbook:
           playbook: ansible/playbook.yml
           playbook-options: '-i ansible/inventory --syntax-check'
+      - run:
+          name: pwd
+          command: pwd 
+      - run:
+          name: ls
+          command: ls
           
             
             
