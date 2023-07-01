@@ -137,6 +137,6 @@
       chdir: raisetech-live8-sample-app
       
   - name: Rename database.yml.sample
-      command: mv config/database.yml.sample config/database.yml
-      args:
-        chdir: /path/to/cloned_directory
+    command: mv config/database.yml.sample config/database.yml
+    args:
+      chdir: /path/to/cloned_directory
