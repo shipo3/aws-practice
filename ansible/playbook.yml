@@ -25,5 +25,10 @@
         - libxml2-devel
         - libxslt-devel 
       state: present
+      
+  - name: Install Node.js
+    yum:
+      name: nodejs
+      state: present
 
     
