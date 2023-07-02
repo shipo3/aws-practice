@@ -85,17 +85,13 @@
       dest: "/home/ec2-user/.rbenv/plugins/ruby-build"
       
   - name: Install Ruby 3.1.2
-    shell: bash -lc "rbenv install 3.1.2"
+    shell: bash -lc "rbenv install 3.1.2s"
     
-  # - name: Rehash rbenv
-  #   shell: rbenv rehash
-  #   args:
-  #     executable: /bin/bash
+  - name: Rehash rbenv
+    shell: bash -lc "rbenv rehash"
  
-  # - name: Set global Ruby version to 3.1.2
-  #   shell: rbenv global 3.1.2
-  #   args:
-  #     executable: /bin/bash
+  - name: Set global Ruby version to 3.1.2
+    shell: bash -lc "rbenv global 3.1.2"
 
    # - name: Install Rails 7.0.4
   #   gem:
