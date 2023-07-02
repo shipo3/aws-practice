@@ -32,7 +32,7 @@
     register: nodesource_repo
     
   - name: Add Yum repo for Node.js
-    command: "curl -sL https://rpm.nodesource.com/setup_14.x | sudo bash -"
+    command: "curl -fsSL https://rpm.nodesource.com/setup_14.x | sudo bash -"
     when: not nodesource_repo.stat.exists
     changed_when: false
     
