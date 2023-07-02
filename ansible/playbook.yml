@@ -60,7 +60,7 @@
   - name: Clone rbenv repository
     git:
       repo: "https://github.com/sstephenson/rbenv.git"
-      dest: "~/.rbenv"
+      dest: "/home/ec2-user/.rbenv"
       version: master
       
   # - name: Add rbenv path to .bash_profile
