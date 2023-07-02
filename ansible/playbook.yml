@@ -84,37 +84,23 @@
       dest: ~/.rbenv/plugins/ruby-build
       version: master
       force: yes
+  
+  - name: Install Ruby 3.1.2
+    shell: rbenv install 3.1.2
+    args:
+      executable: /bin/bash
 
-  # - name: Set default Ruby version
-  #   lineinfile:
-  #     dest: "~/.bashrc"
-  #     line: 'eval "$(rbenv init -)"'
-  #     insertbefore: '^export PATH'
-  #   args:
-  #       state: present   
-        
-  # - name: Clone ruby-build repository
-  #   git:
-  #     repo: "https://github.com/rbenv/ruby-build.git"
-  #     dest: "~/.rbenv/plugins/ruby-build"
-  #     version: master
-      
-  # - name: Install Ruby 3.1.2 using ruby-build
-  #   shell: rbenv install --skip-existing 3.1.2
-  #   args:
-  #     executable: /bin/bash
-  #   environment:
-  #     PATH: "/home/{{ ansible_user }}/.rbenv/bin:/home/{{ ansible_user }}/.rbenv/shims:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-  #     RBENV_ROOT: "/home/{{ ansible_user }}/.rbenv"
-      
-  # - name: Install Bundler
-  #   gem:
-  #     name: bundler
-  #     state: latest
-  #     executable: /home/{{ ansible_user }}/.rbenv/shims/gem
-  #   become_user: "{{ ansible_user }}"
+  - name: Rehash rbenv
+    shell: rbenv rehash
+    args:
+      executable: /bin/bash
+ 
+  - name: Set global Ruby version to 3.1.2
+    shell: rbenv global 3.1.2
+    args:
+      executable: /bin/bash
 
-  # - name: Install Rails 7.0.4
+   # - name: Install Rails 7.0.4
   #   gem:
   #     name: rails
   #     version: 7.0.4
