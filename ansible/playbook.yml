@@ -41,11 +41,22 @@
       name: nodejs
       state: latest
       
-  # - name: Install Yarn
-  #   yum:
-  #     name: yarn
-  #     state: present
-
+  - name: Check if Yarn Yum repo file exists
+    stat:
+      path: /etc/yum.repos.d/yarn.repo
+    register: yarn_repo
+    
+  - name: Add Yum repo for Yarn
+    shell: "curl -fsSL https://dl.yarnpkg.com/rpm/yarn.repo | sudo tee /etc/yum.repos.d/yarn.repo"
+    when: not yarn_repo.stat.exists
+    changed_when: false
+    
+  - name: Install Yarn
+    yum:
+      name: yarn
+      state: latest
+      
+  
   # - name: Clone rbenv repository
   #   git:
   #     repo: "https://github.com/rbenv/rbenv.git"
