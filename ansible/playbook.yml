@@ -57,30 +57,30 @@
       state: latest
       
   
-  # - name: Clone rbenv repository
-  #   git:
-  #     repo: "https://github.com/rbenv/rbenv.git"
-  #     dest: "~/.rbenv"
-  #     version: master
+  - name: Clone rbenv repository
+    git:
+      repo: "https://github.com/rbenv/rbenv.git"
+      dest: "~/.rbenv"
+      version: master
 
-  # - name: Set rbenv environment variables
-  #   lineinfile:
-  #     dest: "~/.bashrc"
-  #     line: 'export PATH="$HOME/.rbenv/bin:$PATH"'
-  #     create: yes
+  - name: Set rbenv environment variables
+    lineinfile:
+      dest: "~/.bashrc"
+      line: 'export PATH="$HOME/.rbenv/bin:$PATH"'
+      create: yes
 
-  # - name: Initialize rbenv
-  #   shell: |
-  #     source ~/.bashrc
-  #     eval "$(rbenv init -)"
-  #   args:
-  #     executable: /bin/bash
+  - name: Initialize rbenv
+    shell: |
+      source ~/.bashrc
+      eval "$(rbenv init -)"
+    args:
+      executable: /bin/bash
 
-  # - name: Install rbenv plugins
-  #   git:
-  #     repo: "https://github.com/rbenv/ruby-build.git"
-  #     dest: "~/.rbenv/plugins/ruby-build"
-  #     version: master
+  - name: Install rbenv plugins
+    git:
+      repo: "https://github.com/rbenv/ruby-build.git"
+      dest: "~/.rbenv/plugins/ruby-build"
+      version: master
 
   # - name: Set default Ruby version
   #   lineinfile:
