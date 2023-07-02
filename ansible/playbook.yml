@@ -59,24 +59,24 @@
   
   - name: Clone rbenv repository
     git:
-      repo: "https://github.com/rbenv/rbenv.git"
+      repo: "https://github.com/sstephenson/rbenv.git"
       dest: "~/.rbenv"
       version: master
       
-  - name: Add rbenv path to .bash_profile
-    lineinfile:
-      path: ~/.bash_profile
-      line: 'export PATH="$HOME/.rbenv/bin:$PATH"'
-      create: yes
+  # - name: Add rbenv path to .bash_profile
+  #   lineinfile:
+  #     path: ~/.bash_profile
+  #     line: 'export PATH="$HOME/.rbenv/bin:$PATH"'
+  #     create: yes
 
-  - name: Initialize rbenv
-    lineinfile:
-      path: ~/.bash_profile
-      line: 'eval "$(rbenv init -)"'
-      create: yes
+  # - name: Initialize rbenv
+  #   lineinfile:
+  #     path: ~/.bash_profile
+  #     line: 'eval "$(rbenv init -)"'
+  #     create: yes
 
-  - name: Load .bash_profile
-    shell: source ~/.bash_profile
+  # - name: Load .bash_profile
+  #   shell: source ~/.bash_profile
 
       
   # - name: Install rbenv plugins
