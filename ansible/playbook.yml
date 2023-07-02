@@ -63,46 +63,46 @@
       dest: "~/.rbenv"
       version: master
 
-  - name: Set rbenv environment variables
-    lineinfile:
-      dest: "~/.bashrc"
-      line: 'export PATH="$HOME/.rbenv/bin:$PATH"'
-      create: yes
+  # - name: Set rbenv environment variables
+  #   lineinfile:
+  #     dest: "~/.bashrc"
+  #     line: 'export PATH="$HOME/.rbenv/bin:$PATH"'
+  #     create: yes
 
-  - name: Initialize rbenv
-    shell: |
-      source ~/.bashrc
-      eval "$(rbenv init -)"
-    args:
-      executable: /bin/bash
+  # - name: Initialize rbenv
+  #   shell: |
+  #     source ~/.bashrc
+  #     eval "$(rbenv init -)"
+  #   args:
+  #     executable: /bin/bash
 
-  - name: Install rbenv plugins
-    git:
-      repo: "https://github.com/rbenv/ruby-build.git"
-      dest: "~/.rbenv/plugins/ruby-build"
-      version: master
+  # - name: Install rbenv plugins
+  #   git:
+  #     repo: "https://github.com/rbenv/ruby-build.git"
+  #     dest: "~/.rbenv/plugins/ruby-build"
+  #     version: master
 
-  - name: Set default Ruby version
-    lineinfile:
-      dest: "~/.bashrc"
-      line: 'eval "$(rbenv init -)"'
-      insertbefore: '^export PATH'
-    args:
-        state: present   
+  # - name: Set default Ruby version
+  #   lineinfile:
+  #     dest: "~/.bashrc"
+  #     line: 'eval "$(rbenv init -)"'
+  #     insertbefore: '^export PATH'
+  #   args:
+  #       state: present   
         
-  - name: Clone ruby-build repository
-    git:
-      repo: "https://github.com/rbenv/ruby-build.git"
-      dest: "~/.rbenv/plugins/ruby-build"
-      version: master
+  # - name: Clone ruby-build repository
+  #   git:
+  #     repo: "https://github.com/rbenv/ruby-build.git"
+  #     dest: "~/.rbenv/plugins/ruby-build"
+  #     version: master
       
-  - name: Install Ruby 3.1.2 using ruby-build
-    shell: rbenv install --skip-existing 3.1.2
-    args:
-      executable: /bin/bash
-    environment:
-      PATH: "/home/{{ ansible_user }}/.rbenv/bin:/home/{{ ansible_user }}/.rbenv/shims:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-      RBENV_ROOT: "/home/{{ ansible_user }}/.rbenv"
+  # - name: Install Ruby 3.1.2 using ruby-build
+  #   shell: rbenv install --skip-existing 3.1.2
+  #   args:
+  #     executable: /bin/bash
+  #   environment:
+  #     PATH: "/home/{{ ansible_user }}/.rbenv/bin:/home/{{ ansible_user }}/.rbenv/shims:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+  #     RBENV_ROOT: "/home/{{ ansible_user }}/.rbenv"
       
   # - name: Install Bundler
   #   gem:
