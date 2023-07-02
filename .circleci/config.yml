@@ -45,7 +45,7 @@ jobs:
           command: pwd 
       - run:
           name: ls
-          command: ls
+          command: ls -a
       - ansible-playbook/playbook:
           playbook: ansible/playbook.yml
           playbook-options: '-i ansible/inventory'
