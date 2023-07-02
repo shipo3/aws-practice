@@ -72,7 +72,7 @@
   - name: Initialize rbenv
     lineinfile:
       path: ~/.bash_profile
-      ine: 'eval "$(rbenv init -)"'
+      line: 'eval "$(rbenv init -)"'
       create: yes
 
   - name: Load .bash_profile
