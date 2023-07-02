@@ -25,15 +25,21 @@
         - libxml2-devel
         - libxslt-devel 
       state: present
-      
-  # - name: Add AWS repository for Node.js
-  #   shell: "curl -sL https://rpm.nodesource.com/setup_14.x | sudo bash -"
+  
+  - name: Check if Node.js Yum repo file exists
+    stat:
+      path: /etc/yum.repos.d/nodesource-el7.repo
+    register: nodesource_repo
     
-  # - name: Install Node.js
-  #   yum:
-  #     name: nodejs
-  #     state: present
-  #     update_cache: yes
+  - name: Add Yum repo for Node.js
+    command: "curl -sL https://rpm.nodesource.com/setup_14.x | sudo bash -"
+    when: not nodesource_repo.stat.exists
+    changed_when: false
+    
+  - name: Install Node.js
+    yum:
+      name: nodejs
+      state: latest
       
   # - name: Install Yarn
   #   yum:
