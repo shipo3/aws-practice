@@ -79,12 +79,11 @@
     shell: source /home/ec2-user/.bash_profile
 
       
-  # - name: Install rbenv plugins
-  #   git:
-  #     repo: https://github.com/sstephenson/ruby-build.git
-  #     dest: ~/.rbenv/plugins/ruby-build
-  #     version: master
-  #     force: yes
+  - name: Install rbenv plugins
+    git:
+      repo: https://github.com/sstephenson/ruby-build.git
+      dest: /home/ec2-user/.rbenv/plugins/ruby-build
+      version: master
   
   # - name: Install Ruby 3.1.2
   #   shell: rbenv install 3.1.2
