@@ -7,163 +7,163 @@
       name: "*"
       state: least
       
-  - name: Install required packages
-    yum:
-      name:
-        - gcc-c++
-        - make
-        - patch
-        - git
-        - curl
-        - zlib-devel
-        - openssl-devel
-        - ImageMagick-devel
-        - readline-devel
-        - libcurl-devel
-        - libffi-devel
-        - libicu-devel
-        - libxml2-devel
-        - libxslt-devel 
-      state: present
+  # - name: Install required packages
+  #   yum:
+  #     name:
+  #       - gcc-c++
+  #       - make
+  #       - patch
+  #       - git
+  #       - curl
+  #       - zlib-devel
+  #       - openssl-devel
+  #       - ImageMagick-devel
+  #       - readline-devel
+  #       - libcurl-devel
+  #       - libffi-devel
+  #       - libicu-devel
+  #       - libxml2-devel
+  #       - libxslt-devel 
+  #     state: present
       
-  - name: Add AWS repository for Node.js
-    shell: "curl -sL https://rpm.nodesource.com/setup_14.x | sudo bash -"
+  # - name: Add AWS repository for Node.js
+  #   shell: "curl -sL https://rpm.nodesource.com/setup_14.x | sudo bash -"
     
-  - name: Install Node.js
-    yum:
-      name: nodejs
-      state: present
-      update_cache: yes
+  # - name: Install Node.js
+  #   yum:
+  #     name: nodejs
+  #     state: present
+  #     update_cache: yes
       
-  - name: Install Yarn
-    yum:
-      name: yarn
-      state: present
+  # - name: Install Yarn
+  #   yum:
+  #     name: yarn
+  #     state: present
 
-  - name: Clone rbenv repository
-    git:
-      repo: "https://github.com/rbenv/rbenv.git"
-      dest: "~/.rbenv"
-      version: master
+  # - name: Clone rbenv repository
+  #   git:
+  #     repo: "https://github.com/rbenv/rbenv.git"
+  #     dest: "~/.rbenv"
+  #     version: master
 
-  - name: Set rbenv environment variables
-    lineinfile:
-      dest: "~/.bashrc"
-      line: 'export PATH="$HOME/.rbenv/bin:$PATH"'
-      create: yes
+  # - name: Set rbenv environment variables
+  #   lineinfile:
+  #     dest: "~/.bashrc"
+  #     line: 'export PATH="$HOME/.rbenv/bin:$PATH"'
+  #     create: yes
 
-  - name: Initialize rbenv
-    shell: |
-      source ~/.bashrc
-      eval "$(rbenv init -)"
-    args:
-      executable: /bin/bash
+  # - name: Initialize rbenv
+  #   shell: |
+  #     source ~/.bashrc
+  #     eval "$(rbenv init -)"
+  #   args:
+  #     executable: /bin/bash
 
-  - name: Install rbenv plugins
-    git:
-      repo: "https://github.com/rbenv/ruby-build.git"
-      dest: "~/.rbenv/plugins/ruby-build"
-      version: master
+  # - name: Install rbenv plugins
+  #   git:
+  #     repo: "https://github.com/rbenv/ruby-build.git"
+  #     dest: "~/.rbenv/plugins/ruby-build"
+  #     version: master
 
-  - name: Set default Ruby version
-    lineinfile:
-      dest: "~/.bashrc"
-      line: 'eval "$(rbenv init -)"'
-      insertbefore: '^export PATH'
-    args:
-        state: present   
+  # - name: Set default Ruby version
+  #   lineinfile:
+  #     dest: "~/.bashrc"
+  #     line: 'eval "$(rbenv init -)"'
+  #     insertbefore: '^export PATH'
+  #   args:
+  #       state: present   
         
-  - name: Clone ruby-build repository
-    git:
-      repo: "https://github.com/rbenv/ruby-build.git"
-      dest: "~/.rbenv/plugins/ruby-build"
-      version: master
+  # - name: Clone ruby-build repository
+  #   git:
+  #     repo: "https://github.com/rbenv/ruby-build.git"
+  #     dest: "~/.rbenv/plugins/ruby-build"
+  #     version: master
       
-  - name: Install Ruby 3.1.2 using ruby-build
-    shell: rbenv install --skip-existing 3.1.2
-    args:
-      executable: /bin/bash
-    environment:
-      PATH: "/home/{{ ansible_user }}/.rbenv/bin:/home/{{ ansible_user }}/.rbenv/shims:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-      RBENV_ROOT: "/home/{{ ansible_user }}/.rbenv"
+  # - name: Install Ruby 3.1.2 using ruby-build
+  #   shell: rbenv install --skip-existing 3.1.2
+  #   args:
+  #     executable: /bin/bash
+  #   environment:
+  #     PATH: "/home/{{ ansible_user }}/.rbenv/bin:/home/{{ ansible_user }}/.rbenv/shims:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+  #     RBENV_ROOT: "/home/{{ ansible_user }}/.rbenv"
       
-  - name: Install Bundler
-    gem:
-      name: bundler
-      state: latest
-      executable: /home/{{ ansible_user }}/.rbenv/shims/gem
-    become_user: "{{ ansible_user }}"
+  # - name: Install Bundler
+  #   gem:
+  #     name: bundler
+  #     state: latest
+  #     executable: /home/{{ ansible_user }}/.rbenv/shims/gem
+  #   become_user: "{{ ansible_user }}"
 
-  - name: Install Rails 7.0.4
-    gem:
-      name: rails
-      version: 7.0.4
-      state: present
-      executable: /home/{{ ansible_user }}/.rbenv/shims/gem
-    become_user: "{{ ansible_user }}"
+  # - name: Install Rails 7.0.4
+  #   gem:
+  #     name: rails
+  #     version: 7.0.4
+  #     state: present
+  #     executable: /home/{{ ansible_user }}/.rbenv/shims/gem
+  #   become_user: "{{ ansible_user }}"
   
-  - name: Download MySQL repository configuration file
-    command: wget https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
+  # - name: Download MySQL repository configuration file
+  #   command: wget https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
 
-  - name: Install MySQL repository
-    command: rpm -ivh mysql80-community-release-el7-3.noarch.rpm
+  # - name: Install MySQL repository
+  #   command: rpm -ivh mysql80-community-release-el7-3.noarch.rpm
 
-  - name: Install MySQL server
-    yum:
-      name: mysql-server
-      state: present
+  # - name: Install MySQL server
+  #   yum:
+  #     name: mysql-server
+  #     state: present
 
-  - name: Start MySQL service
-    service:
-      name: mysqld
-      state: started
-      enabled: yes
+  # - name: Start MySQL service
+  #   service:
+  #     name: mysqld
+  #     state: started
+  #     enabled: yes
       
-  - name: Install MySQL Community Development Packages
-    yum:
-      name: "{{ item }}"
-      state: present
-    with_items:
-      - mysql-community-devel
-      - mysql-community-server
+  # - name: Install MySQL Community Development Packages
+  #   yum:
+  #     name: "{{ item }}"
+  #     state: present
+  #   with_items:
+  #     - mysql-community-devel
+  #     - mysql-community-server
       
-  - name: Clone repository
-    git:
-      repo: https://github.com/yuta-ushijima/raisetech-live8-sample-app.git
-      dest: .
+  # - name: Clone repository
+  #   git:
+  #     repo: https://github.com/yuta-ushijima/raisetech-live8-sample-app.git
+  #     dest: .
       
-  - name: Change directory
-    shell: cd raisetech-live8-sample-app
+  # - name: Change directory
+  #   shell: cd raisetech-live8-sample-app
 
-  - name: Install Bundler
-    command: gem install bundler
-    args:
-      chdir: /raisetech-live8-sample-app
+  # - name: Install Bundler
+  #   command: gem install bundler
+  #   args:
+  #     chdir: /raisetech-live8-sample-app
       
-  - name: Rename database.yml.sample
-    command: mv config/database.yml.sample config/database.yml
+  # - name: Rename database.yml.sample
+  #   command: mv config/database.yml.sample config/database.yml
 
-  - name: Read database.yml
-    slurp:
-      src: /raisetech-live8-sample-app/config/database.yml
-    register: database_yml
+  # - name: Read database.yml
+  #   slurp:
+  #     src: /raisetech-live8-sample-app/config/database.yml
+  #   register: database_yml
 
-  - name: Modify database.yml (socket)
-    replace:
-      path: /raisetech-live8-sample-app/config/database.yml
-      regexp: 'socket:.*'
-      replace: 'socket: /var/lib/mysql/mysql.sock'
-    when: "'socket:' in database_yml.content | b64decode"
+  # - name: Modify database.yml (socket)
+  #   replace:
+  #     path: /raisetech-live8-sample-app/config/database.yml
+  #     regexp: 'socket:.*'
+  #     replace: 'socket: /var/lib/mysql/mysql.sock'
+  #   when: "'socket:' in database_yml.content | b64decode"
 
-  - name: Modify database.yml (host)
-    replace:
-      path: /raisetech-live8-sample-app/config/database.yml
-      regexp: 'host:.*'
-      replace: 'host: circleci-rds-rdsinstance1-mayp2egjkjlf.ceyjn4b1ovyk.ap-northeast-1.rds.amazonaws.com'
-    when: "'host:' not in database_yml.content | b64decode"
+  # - name: Modify database.yml (host)
+  #   replace:
+  #     path: /raisetech-live8-sample-app/config/database.yml
+  #     regexp: 'host:.*'
+  #     replace: 'host: circleci-rds-rdsinstance1-mayp2egjkjlf.ceyjn4b1ovyk.ap-northeast-1.rds.amazonaws.com'
+  #   when: "'host:' not in database_yml.content | b64decode"
 
-  - name: Add host to database.yml
-    lineinfile:
-      path: /raisetech-live8-sample-app/config/database.yml
-      line: '  host: circleci-rds-rdsinstance1-mayp2egjkjlf.ceyjn4b1ovyk.ap-northeast-1.rds.amazonaws.com'
-    when: "'host:' not in database_yml.content | b64decode"
+  # - name: Add host to database.yml
+  #   lineinfile:
+  #     path: /raisetech-live8-sample-app/config/database.yml
+  #     line: '  host: circleci-rds-rdsinstance1-mayp2egjkjlf.ceyjn4b1ovyk.ap-northeast-1.rds.amazonaws.com'
+  #   when: "'host:' not in database_yml.content | b64decode"
