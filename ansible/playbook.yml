@@ -83,10 +83,10 @@
     git:
       repo: https://github.com/sstephenson/ruby-build.git
       dest: "/home/ec2-user/.rbenv/plugins/ruby-build"
-      version: master
+      version: masters
   
-  # - name: Install Ruby 3.1.2
-  #   shell: "rbenv install 3.1.2"
+  - name: Install Ruby 3.1.2
+    shell: "rbenv install 3.1.2"
     
   # - name: Rehash rbenv
   #   shell: rbenv rehash
