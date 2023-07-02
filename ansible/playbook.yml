@@ -62,33 +62,34 @@
       repo: "https://github.com/rbenv/rbenv.git"
       dest: "~/.rbenv"
       version: master
-
-  - name: Set rbenv path in .bashrc
+      
+  - name: Add rbenv path to .bash_profile
     lineinfile:
-      dest: ~/.bashrc
+      path: ~/.bash_profile
       line: 'export PATH="$HOME/.rbenv/bin:$PATH"'
-      insertafter: EOF
       create: yes
-        
-  - name: Initialize rbenv
-    shell: |
-      export PATH="$HOME/.rbenv/bin:$PATH"
-      eval "$(rbenv init -)"
-    args:
-      executable: /bin/bash
-      creates: ~/.rbenv/version
 
-  - name: Install rbenv plugins
-    git:
-      repo: https://github.com/sstephenson/ruby-build.git
-      dest: ~/.rbenv/plugins/ruby-build
-      version: master
-      force: yes
+  - name: Initialize rbenv
+    lineinfile:
+      path: ~/.bash_profile
+      ine: 'eval "$(rbenv init -)"'
+      create: yes
+
+  - name: Load .bash_profile
+    shell: source ~/.bash_profile
+
+      
+  # - name: Install rbenv plugins
+  #   git:
+  #     repo: https://github.com/sstephenson/ruby-build.git
+  #     dest: ~/.rbenv/plugins/ruby-build
+  #     version: master
+  #     force: yes
   
-  - name: Install Ruby 3.1.2
-    shell: rbenv install 3.1.2
-    args:
-      executable: /bin/bash
+  # - name: Install Ruby 3.1.2
+  #   shell: rbenv install 3.1.2
+  #   args:
+  #     executable: /bin/bash
 
   # - name: Rehash rbenv
   #   shell: rbenv rehash
