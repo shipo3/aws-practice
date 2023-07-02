@@ -90,15 +90,15 @@
     args:
       executable: /bin/bash
 
-  - name: Rehash rbenv
-    shell: rbenv rehash
-    args:
-      executable: /bin/bash
+  # - name: Rehash rbenv
+  #   shell: rbenv rehash
+  #   args:
+  #     executable: /bin/bash
  
-  - name: Set global Ruby version to 3.1.2
-    shell: rbenv global 3.1.2
-    args:
-      executable: /bin/bash
+  # - name: Set global Ruby version to 3.1.2
+  #   shell: rbenv global 3.1.2
+  #   args:
+  #     executable: /bin/bash
 
    # - name: Install Rails 7.0.4
   #   gem:
