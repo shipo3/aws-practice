@@ -63,20 +63,20 @@
       dest: "/home/ec2-user/.rbenv"
       version: master
       
-  # - name: Add rbenv path to .bash_profile
-  #   lineinfile:
-  #     path: ~/.bash_profile
-  #     line: 'export PATH="$HOME/.rbenv/bin:$PATH"'
-  #     create: yes
+  - name: Add rbenv path to .bash_profile
+    lineinfile:
+      path: /home/ec2-user/.bash_profile
+      line: 'export PATH="$HOME/.rbenv/bin:$PATH"'
+      create: yes
 
-  # - name: Initialize rbenv
-  #   lineinfile:
-  #     path: ~/.bash_profile
-  #     line: 'eval "$(rbenv init -)"'
-  #     create: yes
+  - name: Initialize rbenv
+    lineinfile:
+      path: /home/ec2-user/.bash_profile
+      line: 'eval "$(rbenv init -)"'
+      create: yes
 
-  # - name: Load .bash_profile
-  #   shell: source ~/.bash_profile
+  - name: Load .bash_profile
+    shell: source /home/ec2-user/.bash_profile
 
       
   # - name: Install rbenv plugins
