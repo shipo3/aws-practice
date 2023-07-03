@@ -83,9 +83,15 @@
     git:
       repo: https://github.com/sstephenson/ruby-build.git
       dest: "/home/ec2-user/.rbenv/plugins/ruby-build"
+  
+  - name: Check if Ruby is installed
+    stat:
+      path: /home/ec2-user/.rbenv/versions/3.1.2
+    register: ruby_check
       
   - name: Install Ruby 3.1.2
     shell: bash -lc "rbenv install 3.1.2"
+    when: not ruby_check.stat.exists
     
   - name: Rehash rbenv
     shell: bash -lc "rbenv rehash"
