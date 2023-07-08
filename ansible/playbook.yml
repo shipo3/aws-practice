@@ -78,7 +78,7 @@
       repo: "https://github.com/sstephenson/rbenv.git"
       dest: "/home/ec2-user/.rbenv"
       version: master
-  #  shell: bash -lc "sudo chmod -R u+w /home/ec2-user/.rbenv"
+    shell: bash -lc "sudo chmod -R u+w /home/ec2-user/.rbenv"
       
   - name: Add rbenv path to .bash_profile
     lineinfile:
