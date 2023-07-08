@@ -70,7 +70,7 @@
       state: latest
   
 # ------------------------------------------------------------#
-# Update Package
+# Install rvenv
 # ------------------------------------------------------------#    
 
   - name: Clone rbenv repository
@@ -92,11 +92,8 @@
       create: yes
 
   - name: Load .bash_profile
-    shell: "source /home/ec2-user/.bash_profile"
-
-# ------------------------------------------------------------#
-# Install rvenv
-# ------------------------------------------------------------#
+    shell: bash -lc "source /home/ec2-user/.bash_profile"
+    
   - name: Install rbenv plugins
     git:
       repo: https://github.com/sstephenson/ruby-build.git
