@@ -2,11 +2,18 @@
 - hosts: server
   become: true
   tasks:
+  
+# ------------------------------------------------------------#
+# Update Package
+# ------------------------------------------------------------#
   - name: package update
     yum:
       name: "*"
       state: latest
       
+# ------------------------------------------------------------#
+# Install Package For Rails
+# ------------------------------------------------------------#
   - name: Install required packages
     yum:
       name:
@@ -25,7 +32,10 @@
         - libxml2-devel
         - libxslt-devel 
       state: present
-  
+      
+# ------------------------------------------------------------#
+# Install Node.js
+# ------------------------------------------------------------#
   - name: Check if Node.js Yum repo file exists
     stat:
       path: /etc/yum.repos.d/nodesource-el7.repo
@@ -41,6 +51,9 @@
       name: nodejs
       state: latest
       
+# ------------------------------------------------------------#
+# Install Yarn
+# ------------------------------------------------------------#
   - name: Check if Yarn Yum repo file exists
     stat:
       path: /etc/yum.repos.d/yarn.repo
@@ -55,8 +68,11 @@
     yum:
       name: yarn
       state: latest
-      
   
+# ------------------------------------------------------------#
+# Update Package
+# ------------------------------------------------------------#    
+
   - name: Clone rbenv repository
     git:
       repo: "https://github.com/sstephenson/rbenv.git"
@@ -78,12 +94,17 @@
   - name: Load .bash_profile
     shell: "source /home/ec2-user/.bash_profile"
 
-      
+# ------------------------------------------------------------#
+# Install rvenv
+# ------------------------------------------------------------#
   - name: Install rbenv plugins
     git:
       repo: https://github.com/sstephenson/ruby-build.git
       dest: "/home/ec2-user/.rbenv/plugins/ruby-build"
-  
+      
+# ------------------------------------------------------------#
+# Install Ruby
+# ------------------------------------------------------------#
   - name: Check if Ruby is installed
     stat:
       path: /home/ec2-user/.rbenv/versions/3.1.2
