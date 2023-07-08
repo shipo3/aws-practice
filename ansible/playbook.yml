@@ -1,12 +1,14 @@
 ---
 - hosts: server
   become: true
+  become_user: ec2-user
   tasks:
   
 # ------------------------------------------------------------#
 # Update Package
 # ------------------------------------------------------------#
   - name: package update
+    become_user: root
     yum:
       name: "*"
       state: latest
@@ -15,6 +17,7 @@
 # Install Package For Rails
 # ------------------------------------------------------------#
   - name: Install required packages
+    become_user: root
     yum:
       name:
         - gcc-c++
@@ -42,11 +45,13 @@
     register: nodesource_repo
     
   - name: Add Yum repo for Node.js
+    become_user: root
     shell: "curl -fsSL https://rpm.nodesource.com/setup_14.x | sudo bash -"
     when: not nodesource_repo.stat.exists
     changed_when: false
     
   - name: Install Node.js
+    become_user: root
     yum:
       name: nodejs
       state: latest
@@ -60,11 +65,13 @@
     register: yarn_repo
     
   - name: Add Yum repo for Yarn
+    become_user: root
     shell: "curl -fsSL https://dl.yarnpkg.com/rpm/yarn.repo | sudo tee /etc/yum.repos.d/yarn.repo"
     when: not yarn_repo.stat.exists
     changed_when: false
     
   - name: Install Yarn
+    become_user: root
     yum:
       name: yarn
       state: latest
@@ -78,10 +85,7 @@
       repo: "https://github.com/sstephenson/rbenv.git"
       dest: "/home/ec2-user/.rbenv"
       version: master
-      
-  - name: Change permissions .rbenv
-    shell: bash -lc "sudo chmod -R u+w /home/ec2-user/.rbenv"
-      
+
   - name: Add rbenv path to .bash_profile
     lineinfile:
       path: /home/ec2-user/.bash_profile
