@@ -73,7 +73,18 @@
 # Install rvenv
 # ------------------------------------------------------------#    
 
+  - name: Change access privileges
+    become: true
+    become_user: root
+    file:
+      path: /home/ec2-user
+      owner: ec2-user
+      group: ec2-user
+      mode: '0755'
+  
   - name: Clone rbenv repository
+    become: true
+    become_user: ec2-user
     git:
       repo: "https://github.com/sstephenson/rbenv.git"
       dest: "/home/ec2-user/.rbenv"
