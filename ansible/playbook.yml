@@ -130,6 +130,8 @@
   - name: Check if Rails is installed
     shell: bash -lc "gem list -e rails | grep 7.0.4"
     register: rails_check
+    changed_when: no
+    ignore_errors: yes
 
   - name: Install Rails 7.0.4
     gem:
