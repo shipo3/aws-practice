@@ -146,23 +146,19 @@
 # ------------------------------------------------------------#
 
   - name: Import MySQL GPG key
-    become_user: root
     shell: sudo rpm --import "https://repo.mysql.com/RPM-GPG-KEY-mysql-2022"
 
   - name: Download and install MySQL repository package
-    become_user: root
-    get_url:
-      url: https://dev.mysql.com/get/mysql80-community-release-el7-7.noarch.rpm
-      dest: /tmp/mysql80-community-release-el7-7.noarch.rpm
+    shell: sudo rpm -Uvh "https://dev.mysql.com/get/mysql80-community-release-el7-7.noarch.rpm"
 
-  - name: Install MySQL repository package
-    become_user: root
-    yum:
-      name: /tmp/mysql80-community-release-el7-7.noarch.rpm
-      state: present
+  # - name: Install MySQL repository package
+  #   become_user: root
+  #   yum:
+  #     name: /tmp/mysql80-community-release-el7-7.noarch.rpm
+  #     state: present
 
       
-  - name: Install MySQL 
+  - name: Install mysql-devel 
     become_user: root
     yum:
       name: "{{ item }}"
