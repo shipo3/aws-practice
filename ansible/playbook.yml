@@ -149,14 +149,7 @@
     shell: sudo rpm --import "https://repo.mysql.com/RPM-GPG-KEY-mysql-2022"
 
   - name: Download and install MySQL repository package
-    shell: sudo rpm -Uvh "https://dev.mysql.com/get/mysql80-community-release-el7-7.noarch.rpm"
-
-  # - name: Install MySQL repository package
-  #   become_user: root
-  #   yum:
-  #     name: /tmp/mysql80-community-release-el7-7.noarch.rpm
-  #     state: present
-
+    shell: sudo rpm -ivh "https://dev.mysql.com/get/mysql80-community-release-el7-7.noarch.rpm"
       
   - name: Install mysql-devel 
     become_user: root
@@ -169,18 +162,22 @@
       - mysql-community-devel
       - mysql-community-server
       
-  # - name: Clone repository
-  #   git:
-  #     repo: https://github.com/yuta-ushijima/raisetech-live8-sample-app.git
-  #     dest: .
+# ------------------------------------------------------------#
+# Clone APP
+# ------------------------------------------------------------#
       
-  # - name: Change directory
-  #   shell: cd raisetech-live8-sample-app
+  - name: Clone repository
+    git:
+      repo: https://github.com/yuta-ushijima/raisetech-live8-sample-app.git
+      dest: /home/ec2-user/raisetech-live8-sample-app
+      
+  - name: Change directory
+    shell: cd raisetech-live8-sample-app
 
-  # - name: Install Bundler
-  #   command: gem install bundler
-  #   args:
-  #     chdir: /raisetech-live8-sample-app
+  - name: Install Bundler
+    command: gem install bundler
+    args:
+      chdir: /raisetech-live8-sample-app
       
   # - name: Rename database.yml.sample
   #   command: mv config/database.yml.sample config/database.yml
