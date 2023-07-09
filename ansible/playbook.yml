@@ -165,6 +165,7 @@
       - mysql-devel
       - mysql-community-devel
       - mysql-community-server
+      
 # ------------------------------------------------------------#
 # Clone APP
 # ------------------------------------------------------------#
@@ -180,7 +181,7 @@
   - name: Install Bundler
     command: gem install bundler
     args:
-      chdir: /raisetech-live8-sample-app
+      chdir: raisetech-live8-sample-app
       
   # - name: Rename database.yml.sample
   #   command: mv config/database.yml.sample config/database.yml
