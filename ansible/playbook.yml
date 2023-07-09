@@ -179,7 +179,7 @@
     shell: cd raisetech-live8-sample-app
 
   - name: Install Bundler
-    command: gem install bundler
+    shell: bash -lc "bundle install"
     args:
       chdir: raisetech-live8-sample-app
       
