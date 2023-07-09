@@ -128,7 +128,7 @@
 # Install Rails
 # ------------------------------------------------------------#
   - name: Check if Rails is installed
-    shell: bash -lc "gem list -e rails ^rails (7.0.4)$'"
+    shell: bash -lc "gem list -e '^rails (7.0.4)$'"
     register: rails_check
 
   - name: Install Rails 7.0.4
