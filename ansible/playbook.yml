@@ -123,15 +123,22 @@
  
   - name: Set global Ruby version to 3.1.2
     shell: bash -lc "rbenv global 3.1.2"
+    
+# ------------------------------------------------------------#
+# Install Rails
+# ------------------------------------------------------------#
+  - name: Check if Rails is installed
+    shell: bash -lc "gem list -e rails ^rails (7.0.4)$'"
+    register: rails_check
 
-   # - name: Install Rails 7.0.4
-  #   gem:
-  #     name: rails
-  #     version: 7.0.4
-  #     state: present
-  #     executable: /home/{{ ansible_user }}/.rbenv/shims/gem
-  #   become_user: "{{ ansible_user }}"
-  
+  - name: Install Rails 7.0.4
+    gem:
+      name: rails
+      version: 7.0.4
+      state: present
+    when: not ruby_check.stat.exists
+    
+    
   # - name: Download MySQL repository configuration file
   #   command: wget https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
 
