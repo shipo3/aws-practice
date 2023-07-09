@@ -165,8 +165,6 @@
       - mysql-devel
       - mysql-community-devel
       - mysql-community-server
-    when: "'mysql' not in ansible_facts.packages"
-    
 # ------------------------------------------------------------#
 # Clone APP
 # ------------------------------------------------------------#
