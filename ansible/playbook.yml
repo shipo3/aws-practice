@@ -194,7 +194,7 @@
 # ------------------------------------------------------------#
   - name: Check if the folder exists
     stat:
-      path: /home/ec2-user/raisetech-live8-sample-appconfig/database.yml.sample
+      path: /home/ec2-user/raisetech-live8-sample-appconfig/database.yml
     register: file_check
     
   - name: Rename database.yml.sample
