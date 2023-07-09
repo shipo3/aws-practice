@@ -155,7 +155,7 @@
     args:
       creates: /etc/yum.repos.d/mysql-community.repo
       
-  - name: Install mysql-devel 
+  - name: Install mysql-devel
     become_user: root
     yum:
       name: "{{ item }}"
