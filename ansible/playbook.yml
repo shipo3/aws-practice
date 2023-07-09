@@ -147,9 +147,13 @@
 
   - name: Import MySQL GPG key
     shell: sudo rpm --import "https://repo.mysql.com/RPM-GPG-KEY-mysql-2022"
+    args:
+    creates: /var/lib/mysql/mysql80-community-release-el7-7.noarch.rpm
 
   - name: Download and install MySQL repository package
     shell: sudo rpm -Uvh "https://dev.mysql.com/get/mysql80-community-release-el7-7.noarch.rpm"
+    args:
+    creates: /etc/yum.repos.d/mysql-community.repo
       
   - name: Install mysql-devel 
     become_user: root
@@ -161,7 +165,8 @@
       - mysql-devel
       - mysql-community-devel
       - mysql-community-server
-      
+    when: "'mysql' not in ansible_facts.packages"
+    
 # ------------------------------------------------------------#
 # Clone APP
 # ------------------------------------------------------------#
