@@ -145,7 +145,8 @@
 # Install MySQL
 # ------------------------------------------------------------#
   - name: Download MySQL repository RPM
-   # become_user: root
+    become_user: root
+    shell: rpm --import "https://repo.mysql.com/RPM-GPG-KEY-mysql-2022"
     get_url:
       url: https://dev.mysql.com/get/mysql80-community-release-el7-7.noarch.rpm
       dest: /tmp/mysql80-community-release-el7-7.noarch.rpm
