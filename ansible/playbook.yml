@@ -183,8 +183,8 @@
     args:
       chdir: raisetech-live8-sample-app
       
-  # - name: Rename database.yml.sample
-  #   command: mv config/database.yml.sample config/database.yml
+  - name: Rename database.yml.sample
+    command: mv config/database.yml.sample config/database.yml
 
   # - name: Read database.yml
   #   slurp:
