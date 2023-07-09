@@ -183,30 +183,46 @@
     args:
       chdir: raisetech-live8-sample-app
       
+# ------------------------------------------------------------#
+# Change RDS connection information
+# ------------------------------------------------------------#
+      
   - name: Rename database.yml.sample
     command: mv /home/ec2-user/raisetech-live8-sample-app/config/database.yml.sample /home/ec2-user/raisetech-live8-sample-app/config/database.yml
 
-  # - name: Read database.yml
-  #   slurp:
-  #     src: /raisetech-live8-sample-app/config/database.yml
-  #   register: database_yml
+  - name: Read database.yml
+    slurp:
+      src: /home/ec2-user/raisetech-live8-sample-app/config/database.yml
+    register: database_yml
 
-  # - name: Modify database.yml (socket)
-  #   replace:
-  #     path: /raisetech-live8-sample-app/config/database.yml
-  #     regexp: 'socket:.*'
-  #     replace: 'socket: /var/lib/mysql/mysql.sock'
-  #   when: "'socket:' in database_yml.content | b64decode"
+  - name: Modify database.yml (socket)
+    replace:
+      path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml
+      regexp: 'socket:.*'
+      replace: 'socket: /var/lib/mysql/mysql.sock'
+    when: "'socket:' in database_yml.content | b64decode"
 
-  # - name: Modify database.yml (host)
-  #   replace:
-  #     path: /raisetech-live8-sample-app/config/database.yml
-  #     regexp: 'host:.*'
-  #     replace: 'host: circleci-rds-rdsinstance1-mayp2egjkjlf.ceyjn4b1ovyk.ap-northeast-1.rds.amazonaws.com'
-  #   when: "'host:' not in database_yml.content | b64decode"
+  - name: Modify database.yml (password)
+    replace:
+      path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml
+      regexp: 'password:.*'
+      replace: 'password: kagiu310Fuwauu8+'
+    when: "'password:' in database_yml.content | b64decode"
+   
+  - name: Modify database.yml (host)
+    replace:
+      path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml
+      regexp: 'host:.*'
+      replace: 'host: circleci-rds-rdsinstance1-pmpoeeejxpl8.ceyjn4b1ovyk.ap-northeast-1.rds.amazonaws.com'
+    when: "'host:' in database_yml.content | b64decode"
+     
+  # - name: Check if the string exists in database.yml
+  #   command: grep -q "host" /home/ec2-user/raisetech-live8-sample-app/config/database.yml
+  #   register: grep_result
+  #   ignore_errors: true
 
-  # - name: Add host to database.yml
+  # - name: Add the string to database.yml if it doesn't exist
   #   lineinfile:
-  #     path: /raisetech-live8-sample-app/config/database.yml
-  #     line: '  host: circleci-rds-rdsinstance1-mayp2egjkjlf.ceyjn4b1ovyk.ap-northeast-1.rds.amazonaws.com'
-  #   when: "'host:' not in database_yml.content | b64decode"
+  #     path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml
+  #     line: "host: circleci-rds-rdsinstance1-pmpoeeejxpl8.ceyjn4b1ovyk.ap-northeast-1.rds.amazonaws.com"
+  #   when: grep_result.rc != 0
