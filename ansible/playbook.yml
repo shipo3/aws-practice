@@ -141,31 +141,31 @@
       executable: /home/ec2-user/.rbenv/shims/gem
     when: rails_check is failed
     
-    
-  # - name: Download MySQL repository configuration file
-  #   command: wget https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
+# ------------------------------------------------------------#
+# Install MySQL
+# ------------------------------------------------------------#
+  - name: Download MySQL repository RPM
+    become_user: root
+    get_url:
+      url: https://dev.mysql.com/get/mysql80-community-release-el7-7.noarch.rpm
+      dest: /tmp/mysql80-community-release-el7-7.noarch.rpm
 
-  # - name: Install MySQL repository
-  #   command: rpm -ivh mysql80-community-release-el7-3.noarch.rpm
-
-  # - name: Install MySQL server
-  #   yum:
-  #     name: mysql-server
-  #     state: present
-
-  # - name: Start MySQL service
-  #   service:
-  #     name: mysqld
-  #     state: started
-  #     enabled: yes
+  - name: Install MySQL repository RPM
+    become_user: root
+    yum:
+      name: /tmp/mysql80-community-release-el7-7.noarch.rpm
+      state: present
       
-  # - name: Install MySQL Community Development Packages
-  #   yum:
-  #     name: "{{ item }}"
-  #     state: present
-  #   with_items:
-  #     - mysql-community-devel
-  #     - mysql-community-server
+  - name: Install MySQL 
+    become_user: root
+    yum:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - mysql-server
+      - mysql-devel
+      - mysql-community-devel
+      - mysql-community-server
       
   # - name: Clone repository
   #   git:
