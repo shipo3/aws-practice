@@ -137,7 +137,8 @@
     gem:
       name: rails
       version: 7.0.4
-      state: present
+      user_install: no
+      executable: /home/ec2-user/.rbenv/shims/gem
     when: rails_check is failed
     
     
