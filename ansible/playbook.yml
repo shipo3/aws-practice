@@ -144,9 +144,10 @@
 # ------------------------------------------------------------#
 # Install MySQL
 # ------------------------------------------------------------#
+
   - name: Import MySQL GPG key
     become_user: root
-    hell: sudo rpm --import "https://repo.mysql.com/RPM-GPG-KEY-mysql-2022"
+    shell: sudo rpm --import "https://repo.mysql.com/RPM-GPG-KEY-mysql-2022"
 
   - name: Download and install MySQL repository package
     become_user: root
