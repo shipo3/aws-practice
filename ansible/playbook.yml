@@ -149,7 +149,7 @@
     shell: sudo rpm --import "https://repo.mysql.com/RPM-GPG-KEY-mysql-2022"
 
   - name: Download and install MySQL repository package
-    shell: sudo rpm -ivh "https://dev.mysql.com/get/mysql80-community-release-el7-7.noarch.rpm"
+    shell: sudo rpm -Uvh "https://dev.mysql.com/get/mysql80-community-release-el7-7.noarch.rpm"
       
   - name: Install mysql-devel 
     become_user: root
