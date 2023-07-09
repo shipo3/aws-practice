@@ -192,9 +192,14 @@
 # ------------------------------------------------------------#
 # Change RDS connection information
 # ------------------------------------------------------------#
-      
+  - name: Check if the folder exists
+    stat:
+      path: /home/ec2-user/raisetech-live8-sample-appconfig/database.yml.sample
+    register: file_check
+    
   - name: Rename database.yml.sample
     command: mv /home/ec2-user/raisetech-live8-sample-app/config/database.yml.sample /home/ec2-user/raisetech-live8-sample-app/config/database.yml
+    when: not file_check.stat.exists
 
   - name: Read database.yml
     slurp:
