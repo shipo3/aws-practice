@@ -248,9 +248,9 @@
   - name: Run rails db:create
     command: rails db:create
     args:
-      chdir: /home/ec2-user/raisetech-live8-sample-app
+      chdir: raisetech-live8-sample-app
 
   - name: Run rails db:migrate
     command: rails db:migrate
     args:
-      chdir: /home/ec2-user/raisetech-live8-sample-app
+      chdir: raisetech-live8-sample-app
