@@ -243,9 +243,7 @@
 # ------------------------------------------------------------#
   - name: Start MySQL service
     become: root
-    service:
-      name: mysqld
-      state: started
+    shell: sudo service mysqld start
 
   - name: Run rails db:create
     command: rails db:create
