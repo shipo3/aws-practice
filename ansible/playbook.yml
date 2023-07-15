@@ -224,7 +224,7 @@
     replace:
       path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml
       regexp: 'host:.*'
-      replace: 'host: circleci-rds-rdsinstance1-pmpoeeejxpl8.ceyjn4b1ovyk.ap-northeast-1.rds.amazonaws.com'
+      replace: 'host: circleci-rds-rdsinstance1-ot0033ocetrg.ceyjn4b1ovyk.ap-northeast-1.rds.amazonaws.com'
     when: "'host:' in database_yml.content | b64decode"
      
   # - name: Check if the string exists in database.yml
@@ -237,3 +237,22 @@
   #     path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml
   #     line: "host: circleci-rds-rdsinstance1-pmpoeeejxpl8.ceyjn4b1ovyk.ap-northeast-1.rds.amazonaws.com"
   #   when: grep_result.rc != 0
+
+# ------------------------------------------------------------#
+# Create Table
+# ------------------------------------------------------------#
+  - name: Start MySQL service
+    become: root
+    service:
+      name: mysqld
+      state: started
+
+  - name: Run rails db:create
+    command: rails db:create
+    args:
+      chdir: /home/ec2-user/raisetech-live8-sample-app
+
+  - name: Run rails db:migrate
+    command: rails db:migrate
+    args:
+      chdir: /home/ec2-user/raisetech-live8-sample-app
