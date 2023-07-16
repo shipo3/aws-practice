@@ -230,19 +230,14 @@
     when: "'host:' in database_yml.content | b64decode"
 
 # ------------------------------------------------------------#
-# Create Table
+# Create database
 # ------------------------------------------------------------#
   - name: Start MySQL service
-    become_user: root
-    shell: service mysqld start
+    shell: sudo service mysqld start
 
-  - name: Run rails db:create
-    become_user: ec2-user
-    command: bundle exec rails db:create
+  - name: Create database
+    shell: |
+      bash -lc "rails db:create"
+      bash -lc "rails db:migrate"
     args:
       chdir: /home/ec2-user/raisetech-live8-sample-app
-
-  - name: Run rails db:migrate
-    command: rails db:migrate
-    args:
-      chdir: raisetech-live8-sample-app
