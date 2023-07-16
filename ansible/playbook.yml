@@ -235,6 +235,7 @@
     shell: sudo service mysqld start
 
   - name: Run rails db:create
+    become_user: ec2-user
     command: rails db:create
     args:
       chdir: /home/ec2-user/raisetech-live8-sample-app
