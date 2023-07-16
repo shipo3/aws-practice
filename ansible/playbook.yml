@@ -241,3 +241,12 @@
       bash -lc "rails db:migrate"
     args:
       chdir: /home/ec2-user/raisetech-live8-sample-app
+      
+# ------------------------------------------------------------#
+# Compiling scss
+# ------------------------------------------------------------#
+
+  - name: Compiling scss
+    shell: bash -lc "rails assets:precompile"
+    args:
+      chdir: /home/ec2-user/raisetech-live8-sample-app
