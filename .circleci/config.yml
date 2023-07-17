@@ -70,5 +70,5 @@ workflows:
       - execute-ansible
       - execute-serverspec:
         requires:
-        - execute-ansible
+          - execute-ansible
       
