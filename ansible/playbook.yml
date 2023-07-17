@@ -237,7 +237,6 @@
     service:
         name: mysqld
         state: started
-  #  shell: sudo service mysqld start
 
   - name: Create database
     shell: |
@@ -282,6 +281,15 @@
     template:
       src: nginx.conf.j2  
       dest: /etc/nginx/conf.d/nginx.conf
+    when: nginx_check.stat.exists
+# ------------------------------------------------------------#
+# Start Nginx 
+# ------------------------------------------------------------#
+  - name: start nginx
+    become_user: root
+    service:
+        name: mysqld
+        state: started
     when: nginx_check.stat.exists
 
   
