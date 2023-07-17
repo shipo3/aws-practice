@@ -295,6 +295,9 @@
 # ------------------------------------------------------------#
 # Start Unicorn
 # ------------------------------------------------------------# 
-  - name: start nginx
-    shoell: bash -lc "bundle exec unicorn_rails -c config/unicorn.rb -D"
+  - name: start unicorn
+    shell: |
+      cd /home/ec2-user/raisetech-live8-sample-app
+      bundle exec unicorn -c config/unicorn.rb -D
+
         
