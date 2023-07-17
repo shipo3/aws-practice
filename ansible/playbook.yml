@@ -298,7 +298,7 @@
   - name: Change directory
     shell: cd /home/ec2-user/raisetech-live8-sample-app
       
-  - name: start unicorn
-    shell: bash -lc "bundle exec unicorn -c config/unicorn.rb -D"
+  # - name: start unicorn
+  #   shell: bash -lc "bundle exec unicorn -c config/unicorn.rb -D"
 
         
