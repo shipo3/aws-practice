@@ -49,6 +49,17 @@ jobs:
       - ansible-playbook/playbook:
           playbook: ansible/playbook.yml
           playbook-options: '-i ansible/inventory'
+          
+  execute-serverspec:
+    executor: ruby/default
+    steps:
+      - checkout
+      - run:
+        name: Install Serverspec
+        command: gem install serverspec
+      - run:
+        name: Run Serverspec
+        command: rake spec
             
             
 workflows:
@@ -57,4 +68,7 @@ workflows:
       - cfn-lint
       - execute-cfn
       - execute-ansible
+      - execute-serverspec:
+        requires:
+        - execute-ansible
       
