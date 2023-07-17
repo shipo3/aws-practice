@@ -264,9 +264,8 @@
     register: nginx_check
 
   - name: Install Nginx
-    yum:
-      name: nginx
-      state: present
+    become_user: root
+    shell: amazon-linux-extras install nginx1
     when: not nginx_check.stat.exists
 
 
