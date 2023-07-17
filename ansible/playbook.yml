@@ -292,5 +292,9 @@
         state: started
     when: nginx_check.stat.exists
 
-  
-  
+# ------------------------------------------------------------#
+# Start Unicorn
+# ------------------------------------------------------------# 
+  - name: start nginx
+    shoell: bash -lc "bundle exec unicorn_rails -c config/unicorn.rb -D"
+        
