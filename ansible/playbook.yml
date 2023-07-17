@@ -233,7 +233,11 @@
 # Create database
 # ------------------------------------------------------------#
   - name: Start MySQL service
-    shell: sudo service mysqld start
+    become_user: root
+    service:
+        name: mysqld
+        state: started
+  #  shell: sudo service mysqld start
 
   - name: Create database
     shell: |
@@ -256,5 +260,7 @@
 # ------------------------------------------------------------#
 
   - name: Run app
-    shell: bash -lc "rails s -b 0.0.0.0"
+    shell: |
+      bash -lc "rails s -b 0.0.0.0"
+      bash -lc "ps -ef | grep puma"
   
