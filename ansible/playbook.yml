@@ -288,7 +288,7 @@
   - name: start nginx
     become_user: root
     service:
-        name: mysqld
+        name: nginx
         state: started
     when: nginx_check.stat.exists
 
