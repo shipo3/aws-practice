@@ -260,7 +260,6 @@
 # ------------------------------------------------------------#
 
   - name: Run app
-    shell: |
-      bash -lc "rails s -b 0.0.0.0"
-      bash -lc "ps -ef | grep puma"
+    shell: bash -lc "rails s -b 0.0.0.0"
+  
   

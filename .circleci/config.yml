@@ -49,8 +49,9 @@ jobs:
       - ansible-playbook/playbook:
           playbook: ansible/playbook.yml
           playbook-options: '-i ansible/inventory'
-
-          
+     - run:
+          name: puma
+          command: ps -ef | grep puma
             
             
 workflows:
