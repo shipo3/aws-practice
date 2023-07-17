@@ -49,9 +49,6 @@ jobs:
       - ansible-playbook/playbook:
           playbook: ansible/playbook.yml
           playbook-options: '-i ansible/inventory'
-      - run:
-          name: pwd
-          command: pwd 
             
             
 workflows:
