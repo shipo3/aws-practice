@@ -51,7 +51,7 @@ jobs:
           playbook-options: '-i ansible/inventory'
       - run:
           name: puma
-          command: ps -ef | grep puma
+          command: ps ax
             
             
 workflows:
