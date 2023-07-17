@@ -265,7 +265,7 @@
 
   - name: Install Nginx
     become_user: root
-    shell: amazon-linux-extras install nginx1
+    shell: amazon-linux-extras install nginx1 -y
     when: not nginx_check.stat.exists
 
 
