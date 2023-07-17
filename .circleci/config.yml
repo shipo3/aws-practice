@@ -69,6 +69,6 @@ workflows:
       - execute-cfn
       - execute-ansible
       - execute-serverspec:
-        requires:
-          - execute-ansible
+          requires:
+            - execute-ansible
       
