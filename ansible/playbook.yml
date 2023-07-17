@@ -267,6 +267,12 @@
     become_user: root
     shell: amazon-linux-extras install nginx1 -y
     when: not nginx_check.stat.exists
+    
+  - name: Change directory authority
+    become_user: root
+    shell: |
+      cd /var/lib
+      chmod -R 775 nginx
 
 
   
