@@ -256,10 +256,19 @@
       chdir: /home/ec2-user/raisetech-live8-sample-app
       
 # ------------------------------------------------------------#
-# Run app
+# Install Nginx
 # ------------------------------------------------------------#
+  - name: Check if Nginx is installed
+    stat:
+      path: /etc/nginx/nginx.conf
+    register: nginx_check
 
-  - name: Run app
-    shell: bash -lc "rails s -b 0.0.0.0"
+  - name: Install Nginx
+    yum:
+      name: nginx
+      state: present
+    when: not nginx_check.stat.exists
+
+
   
   
