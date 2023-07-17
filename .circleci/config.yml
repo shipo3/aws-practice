@@ -55,11 +55,11 @@ jobs:
     steps:
       - checkout
       - run:
-        name: Install Serverspec
-        command: gem install serverspec
+          name: Install Serverspec
+          command: gem install serverspec
       - run:
-        name: Run Serverspec
-        command: rake spec
+          name: Run Serverspec
+          command: rake spec
             
             
 workflows:
