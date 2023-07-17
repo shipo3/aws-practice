@@ -274,6 +274,15 @@
       cd /var/lib
       chmod -R 775 nginx
 
+# ------------------------------------------------------------#
+# Add Nginx configuration file
+# ------------------------------------------------------------#
+  - name: Copy Nginx configuration file
+    become_user: root
+    template:
+      src: nginx.conf.j2  
+      dest: /etc/nginx/conf.d/nginx.conf
+    when: nginx_check.stat.exists
 
   
   
