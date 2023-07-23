@@ -37,7 +37,7 @@ jobs:
           command: |
             mkdir -p /tmp/workspace
             RDS_ENDPOINT=$(aws rds describe-db-instances \
-            --db-instance-identifier RDSInstance1 \
+            --db-instance-identifier CFn-rds \
             --query "DBInstances[*].Endpoint.Address" \
             --output text > /tmp/workspace/rds-endpoint.txt)
             cat /tmp/workspace/rds-endpoint.txt
