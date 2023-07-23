@@ -80,24 +80,28 @@ jobs:
     executor: ruby/default
     steps:
       - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "05:63:33:68:59:f9:6e:c7:6d:fe:58:aa:d7:cf:fa:6f"
       - run:
           name: Install Serverspec
           command: gem install serverspec
       - run:
           name: Run Serverspec tests
-          command: |
-            # Define the target host
-            echo "Host target" > ~/.ssh/config
-            echo "  HostName 54.250.92.188" >> ~/.ssh/config
-            echo "  User ec2-user" >> ~/.ssh/config
-            echo "  IdentityFile ~/.ssh/id_rsa" >> ~/.ssh/config
-            echo "  UserKnownHostsFile /dev/null" >> ~/.ssh/config
-            echo "  StrictHostKeyChecking no" >> ~/.ssh/config
-            echo "  PasswordAuthentication no" >> ~/.ssh/config
-            echo "  IdentitiesOnly yes" >> ~/.ssh/config
-            echo "  LogLevel FATAL" >> ~/.ssh/config
+          # command: |
+          #   # # Define the target host
+          #   # echo "Host target" > ~/.ssh/config
+          #   # echo "  HostName 54.250.92.188" >> ~/.ssh/config
+          #   # echo "  User ec2-user" >> ~/.ssh/config
+          #   # echo "  IdentityFile ~/.ssh/id_rsa" >> ~/.ssh/config
+          #   # echo "  UserKnownHostsFile /dev/null" >> ~/.ssh/config
+          #   # echo "  StrictHostKeyChecking no" >> ~/.ssh/config
+          #   # echo "  PasswordAuthentication no" >> ~/.ssh/config
+          #   # echo "  IdentitiesOnly yes" >> ~/.ssh/config
+          #   # echo "  LogLevel FATAL" >> ~/.ssh/config
 
-            # Run serverspec
+          # Run serverspec
+          command: |
             cd serverspec
             pwd
             ls -a
