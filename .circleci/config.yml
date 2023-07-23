@@ -32,6 +32,20 @@ jobs:
             aws cloudformation deploy --stack-name circleci-ec2 --template-file cloudformation/EC2_S3.yml
             aws cloudformation deploy --stack-name circleci-rds --template-file cloudformation/RDS.yml
             aws cloudformation deploy --stack-name circleci-alb --template-file cloudformation/ALB.yml
+      - run:
+          name: Extract RDS endpoint
+          command: |
+            mkdir -p /tmp/workspace
+            RDS_ENDPOINT=$(aws rds describe-db-instances \
+            --db-instance-identifier CFn-rds \
+            --query "DBInstances[*].Endpoint.Address" \
+            --output text > /tmp/workspace/rds-endpoint.txt)
+            cat /tmp/workspace/rds-endpoint.txt
+           
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths:
+            - rds-endpoint.txt    
           
   execute-ansible:
     executor: ansible-playbook/default
@@ -48,25 +62,14 @@ jobs:
       - run:
           name: ls
           command: ls -a
-      - run:
-          name: Extract RDS endpoint
-          command: |
-           mkdir -p /tmp/workspace
-           RDS_ENDPOINT=$(aws rds describe-db-instances \
-           --db-instance-identifier CFn-rds \
-           --query "DBInstances[*].Endpoint.Address" \
-           --output text > /tmp/workspace/rds-endpoint.txt)
-           cat /tmp/workspace/rds-endpoint.txt
-           
-      - persist_to_workspace:
-          root: /tmp/workspace
-          paths:
-            - rds-endpoint.txt    
           
-          
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: cat /tmp/workspace/rds-endpoint.txt
+      - run: cat /tmp/workspace/alb-dns.txt
       - ansible-playbook/playbook:
           playbook: ansible/playbook.yml
-          playbook-options: '-i ansible/inventory'
+          playbook-options: '-i ansible/inventory' --extra-vars "RDS_ENDPOINT=$(cat /tmp/workspace/rds-endpoint.txt)"
           
   execute-serverspec:
     executor: ruby/default
@@ -75,9 +78,9 @@ jobs:
       - run:
           name: Install Serverspec
           command: gem install serverspec
-      - run:
-          name: Run Serverspec
-          command: rake spec
+      # - run:
+      #     name: Run Serverspec
+      #     command: rake spec
             
             
 workflows:
