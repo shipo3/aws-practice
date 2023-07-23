@@ -45,7 +45,11 @@ jobs:
       - persist_to_workspace:
           root: /tmp/workspace
           paths:
-            - rds-endpoint.txt    
+            - rds-endpoint.txt
+            
+      - run:
+          name: pwd
+          command: pwd
           
   execute-ansible:
     executor: ansible-playbook/default
