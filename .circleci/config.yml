@@ -108,6 +108,7 @@ jobs:
             cd serverspec
             pwd
             ls -a
+            cat ~/.ssh/config
             rake spec
             
 workflows:
