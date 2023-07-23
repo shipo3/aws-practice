@@ -99,6 +99,8 @@ jobs:
 
             # Run serverspec
             cd serverspec
+            pwd
+            ls -a
             rake spec
             
 workflows:
