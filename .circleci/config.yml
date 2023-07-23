@@ -67,9 +67,10 @@ jobs:
           at: /tmp/workspace
       - run: cat /tmp/workspace/rds-endpoint.txt
       - run: cat /tmp/workspace/alb-dns.txt
+      
       - ansible-playbook/playbook:
           playbook: ansible/playbook.yml
-          playbook-options: '-i ansible/inventory' --extra-vars "RDS_ENDPOINT=$(cat /tmp/workspace/rds-endpoint.txt)"
+          playbook-options: '-i ansible/inventory --extra-vars "RDS_ENDPOINT=$(cat /tmp/workspace/rds-endpoint.txt)"'
           
   execute-serverspec:
     executor: ruby/default
