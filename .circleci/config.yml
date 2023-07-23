@@ -46,7 +46,6 @@ jobs:
           root: /tmp/workspace
           paths:
             - rds-endpoint.txt
-            
       - run:
           name: pwd
           command: pwd
@@ -67,15 +66,15 @@ jobs:
           name: ls
           command: ls -a
           
-      - attach_workspace:
-          at: /tmp/workspace
-      - run:
-          name: rds-endpoint.txt
-          command: cat /tmp/workspace/rds-endpoint.txt
+      # - attach_workspace:
+      #     at: /tmp/workspace
+      # - run:
+      #     name: rds-endpoint.txt
+      #     command: cat /tmp/workspace/rds-endpoint.txt
       
       - ansible-playbook/playbook:
           playbook: ansible/playbook.yml
-          playbook-options: '-i ansible/inventory --extra-vars "RDS_ENDPOINT=$(cat /tmp/workspace/rds-endpoint.txt)"'
+          playbook-options: '-i ansible/inventory'
           
   execute-serverspec:
     executor: ruby/default

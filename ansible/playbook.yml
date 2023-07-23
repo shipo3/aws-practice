@@ -226,7 +226,7 @@
     replace:
       path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml
       regexp: 'host:.*'
-      replace: 'host: {{ RDS_ENDPOINT }}'
+      replace: 'host: cfn-rds.ceyjn4b1ovyk.ap-northeast-1.rds.amazonaws.com'
     when: "'host:' in database_yml.content | b64decode"
 
 # ------------------------------------------------------------#
