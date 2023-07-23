@@ -98,6 +98,7 @@ jobs:
             echo "  LogLevel FATAL" >> ~/.ssh/config
 
             # Run serverspec
+            cd serverspec
             TARGET_HOST=target bundle exec rspec
             
 workflows:
