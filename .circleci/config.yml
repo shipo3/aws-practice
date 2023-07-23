@@ -83,10 +83,22 @@ jobs:
       - run:
           name: Install Serverspec
           command: gem install serverspec
-      # - run:
-      #     name: Run Serverspec
-      #     command: rake spec
-            
+      - run:
+          name: Run Serverspec tests
+          command: |
+            # Define the target host
+            echo "Host target" > ~/.ssh/config
+            echo "  HostName ${AWS_PUBLIC_IP}" >> ~/.ssh/config
+            echo "  User ec2-user" >> ~/.ssh/config
+            echo "  IdentityFile ~/.ssh/id_rsa" >> ~/.ssh/config
+            echo "  UserKnownHostsFile /dev/null" >> ~/.ssh/config
+            echo "  StrictHostKeyChecking no" >> ~/.ssh/config
+            echo "  PasswordAuthentication no" >> ~/.ssh/config
+            echo "  IdentitiesOnly yes" >> ~/.ssh/config
+            echo "  LogLevel FATAL" >> ~/.ssh/config
+
+            # Run serverspec
+            TARGET_HOST=target bundle exec rspec
             
 workflows:
   raisetech:
