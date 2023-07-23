@@ -282,14 +282,14 @@
       src: nginx.conf.j2  
       dest: /etc/nginx/conf.d/nginx.conf
     when: nginx_check.stat.exists
-    
+  
   - name: Modify nginx.conf
     become_user: root
     replace:
       path: /etc/nginx/nginx.conf
       regexp: 'user nginx;'
       replace: 'user ec2-user;'
-    when: "'user' nginx.conf.content | b64decode"
+      
 # ------------------------------------------------------------#
 # Start Nginx 
 # ------------------------------------------------------------#
