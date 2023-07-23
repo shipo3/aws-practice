@@ -48,6 +48,22 @@ jobs:
       - run:
           name: ls
           command: ls -a
+      - run:
+          name: Extract RDS endpoint
+          command: |
+           mkdir -p /tmp/workspace
+           RDS_ENDPOINT=$(aws rds describe-db-instances \
+           --db-instance-identifier CFn-rds \
+           --query "DBInstances[*].Endpoint.Address" \
+           --output text > /tmp/workspace/rds-endpoint.txt)
+           cat /tmp/workspace/rds-endpoint.txt
+           
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths:
+            - rds-endpoint.txt    
+          
+          
       - ansible-playbook/playbook:
           playbook: ansible/playbook.yml
           playbook-options: '-i ansible/inventory'
