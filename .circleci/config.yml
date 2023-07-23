@@ -66,7 +66,6 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
       - run: cat /tmp/workspace/rds-endpoint.txt
-      - run: cat /tmp/workspace/alb-dns.txt
       
       - ansible-playbook/playbook:
           playbook: ansible/playbook.yml
