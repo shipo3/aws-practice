@@ -88,7 +88,7 @@ jobs:
           command: |
             # Define the target host
             echo "Host target" > ~/.ssh/config
-            echo "  HostName ${AWS_PUBLIC_IP}" >> ~/.ssh/config
+            echo "  HostName 54.250.92.188" >> ~/.ssh/config
             echo "  User ec2-user" >> ~/.ssh/config
             echo "  IdentityFile ~/.ssh/id_rsa" >> ~/.ssh/config
             echo "  UserKnownHostsFile /dev/null" >> ~/.ssh/config
@@ -98,8 +98,8 @@ jobs:
             echo "  LogLevel FATAL" >> ~/.ssh/config
 
             # Run serverspec
-            cd raisetech-live8-sample-app
-            TARGET_HOST=target bundle exec rspec
+            cd serverspec
+            rake spec
             
 workflows:
   raisetech:
