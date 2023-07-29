@@ -108,13 +108,14 @@ jobs:
           #   # echo "  IdentitiesOnly yes" >> ~/.ssh/config
           #   # echo "  LogLevel FATAL" >> ~/.ssh/config
 
-          # # Run serverspec
-          # command: |
-          #   cd serverspec
-          #   pwd
-          #   ls -a
-          #   cat ~/.ssh/config
-          #   rake spec
+            
+      - run: 
+          name: execute serverspece
+          command: |
+            cd serverspec
+            pwd
+            ls -a
+            rake spec
             
 workflows:
   raisetech:
