@@ -98,26 +98,25 @@ jobs:
           
   
             
-      # - run:
-      #     name: Run Serverspec tests
-      #     command: |
-      #       echo "Host target" > ~/.ssh/config
-      #       echo "  HostName 35.73.67.105" >> ~/.ssh/config
-      #       echo "  User ec2-user" >> ~/.ssh/config
-      #       echo "  IdentityFile ~/.ssh/id_rsa" >> ~/.ssh/config
-      #       echo "  UserKnownHostsFile /dev/null" >> ~/.ssh/config
-      #       echo "  StrictHostKeyChecking no" >> ~/.ssh/config
-      #       echo "  PasswordAuthentication no" >> ~/.ssh/config
-      #       echo "  IdentitiesOnly yes" >> ~/.ssh/config
-      #       echo "  LogLevel FATAL" >> ~/.ssh/config
-
-      #       TARGET_HOST=target bundle exec rspec
+      - run:
+          name:  create ~/.ssh/config file
+          command: |
+            touch ~/.ssh/config
+            echo "Host target" > ~/.ssh/config
+            echo "  HostName 35.73.67.105" >> ~/.ssh/config
+            echo "  User ec2-user" >> ~/.ssh/config
+            echo "  IdentityFile ~/.ssh/id_ecdsa" >> ~/.ssh/config
+            echo "  UserKnownHostsFile /dev/null" >> ~/.ssh/config
+            echo "  StrictHostKeyChecking no" >> ~/.ssh/config
+            echo "  PasswordAuthentication no" >> ~/.ssh/config
+            echo "  IdentitiesOnly yes" >> ~/.ssh/config
+            echo "  LogLevel FATAL" >> ~/.ssh/config
             
       - run: 
           name: execute serverspece
           command: |
             cd serverspec
-            bundle exec rspec
+            rake rspec
             
 workflows:
   raisetech:
