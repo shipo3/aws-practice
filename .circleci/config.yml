@@ -90,7 +90,12 @@ jobs:
             gem install ed25519 bcrypt_pbkdf
             
       - run:
-          name: Run Serverspec tests
+          name: Test SSH connection
+          command: ssh -o "StrictHostKeyChecking no" -i ~/.ssh/id_rsa ec2-user@<EC2 instance IP address> 'exit'
+
+            
+      # - run:
+      #     name: Run Serverspec tests
           # command: |
           #   # # Define the target host
           #   # echo "Host target" > ~/.ssh/config
@@ -103,13 +108,13 @@ jobs:
           #   # echo "  IdentitiesOnly yes" >> ~/.ssh/config
           #   # echo "  LogLevel FATAL" >> ~/.ssh/config
 
-          # Run serverspec
-          command: |
-            cd serverspec
-            pwd
-            ls -a
-            cat ~/.ssh/config
-            rake spec
+          # # Run serverspec
+          # command: |
+          #   cd serverspec
+          #   pwd
+          #   ls -a
+          #   cat ~/.ssh/config
+          #   rake spec
             
 workflows:
   raisetech:
@@ -117,7 +122,7 @@ workflows:
       - cfn-lint
       - execute-cfn
       - execute-ansible
-      # - execute-serverspec:
-      #     requires:
-      #       - execute-ansible
+      - execute-serverspec:
+          requires:
+            - execute-ansible
       
