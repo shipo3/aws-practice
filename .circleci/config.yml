@@ -113,13 +113,11 @@ jobs:
 
       #       TARGET_HOST=target bundle exec rspec
             
-      # - run: 
-      #     name: execute serverspece
-      #     command: |
-      #       cd serverspec
-      #       pwd
-      #       ls -a
-      #       rake spec
+      - run: 
+          name: execute serverspece
+          command: |
+            cd serverspec
+            bundle exec rspec
             
 workflows:
   raisetech:
