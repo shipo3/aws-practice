@@ -96,7 +96,7 @@ jobs:
             echo "Host target" > ~/.ssh/config
             echo "  HostName 35.73.67.105" >> ~/.ssh/config
             echo "  User ec2-user" >> ~/.ssh/config
-            echo "  IdentityFile ~/.ssh/id_rsa" >> ~/.ssh/config
+            echo "  IdentityFile ~/.ssh/id_0563336859f96ec76dfe58aad7cffa6f" >> ~/.ssh/config
             echo "  UserKnownHostsFile /dev/null" >> ~/.ssh/config
             echo "  StrictHostKeyChecking no" >> ~/.ssh/config
             echo "  PasswordAuthentication no" >> ~/.ssh/config
