@@ -194,118 +194,118 @@
 # ------------------------------------------------------------#
 # Change RDS connection information
 # ------------------------------------------------------------#
-  - name: Check if database.yml.sample exists
-    stat:
-      path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml.sample
-    register: file_check
+#   - name: Check if database.yml.sample exists
+#     stat:
+#       path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml.sample
+#     register: file_check
  
-  - name: Rename database.yml.sample
-    command: mv /home/ec2-user/raisetech-live8-sample-app/config/database.yml.sample /home/ec2-user/raisetech-live8-sample-app/config/database.yml
-    when: file_check.stat.exists
+#   - name: Rename database.yml.sample
+#     command: mv /home/ec2-user/raisetech-live8-sample-app/config/database.yml.sample /home/ec2-user/raisetech-live8-sample-app/config/database.yml
+#     when: file_check.stat.exists
 
-  - name: Read database.yml
-    slurp:
-      src: /home/ec2-user/raisetech-live8-sample-app/config/database.yml
-    register: database_yml
+#   - name: Read database.yml
+#     slurp:
+#       src: /home/ec2-user/raisetech-live8-sample-app/config/database.yml
+#     register: database_yml
 
-  - name: Modify database.yml (socket)
-    replace:
-      path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml
-      regexp: 'socket:.*'
-      replace: 'socket: /var/lib/mysql/mysql.sock'
-    when: "'socket:' in database_yml.content | b64decode"
+#   - name: Modify database.yml (socket)
+#     replace:
+#       path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml
+#       regexp: 'socket:.*'
+#       replace: 'socket: /var/lib/mysql/mysql.sock'
+#     when: "'socket:' in database_yml.content | b64decode"
 
-  - name: Modify database.yml (password)
-    replace:
-      path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml
-      regexp: 'password:.*'
-      replace: 'password: kagiu310Fuwauu8+'
-    when: "'password:' in database_yml.content | b64decode"
+#   - name: Modify database.yml (password)
+#     replace:
+#       path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml
+#       regexp: 'password:.*'
+#       replace: 'password: kagiu310Fuwauu8+'
+#     when: "'password:' in database_yml.content | b64decode"
    
-  - name: Modify database.yml (host)
-    replace:
-      path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml
-      regexp: 'host:.*'
-      replace: 'host: cfn-rds.ceyjn4b1ovyk.ap-northeast-1.rds.amazonaws.com'
-    when: "'host:' in database_yml.content | b64decode"
+#   - name: Modify database.yml (host)
+#     replace:
+#       path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml
+#       regexp: 'host:.*'
+#       replace: 'host: cfn-rds.ceyjn4b1ovyk.ap-northeast-1.rds.amazonaws.com'
+#     when: "'host:' in database_yml.content | b64decode"
 
-# ------------------------------------------------------------#
-# Create database
-# ------------------------------------------------------------#
-  - name: Start MySQL service
-    become_user: root
-    service:
-        name: mysqld
-        state: started
+# # ------------------------------------------------------------#
+# # Create database
+# # ------------------------------------------------------------#
+#   - name: Start MySQL service
+#     become_user: root
+#     service:
+#         name: mysqld
+#         state: started
 
-  - name: Create database
-    shell: |
-      bash -lc "rails db:create"
-      bash -lc "rails db:migrate"
-    args:
-      chdir: /home/ec2-user/raisetech-live8-sample-app
+#   - name: Create database
+#     shell: |
+#       bash -lc "rails db:create"
+#       bash -lc "rails db:migrate"
+#     args:
+#       chdir: /home/ec2-user/raisetech-live8-sample-app
       
-# ------------------------------------------------------------#
-# Compiling scss
-# ------------------------------------------------------------#
+# # ------------------------------------------------------------#
+# # Compiling scss
+# # ------------------------------------------------------------#
 
-  - name: Compiling scss
-    shell: bash -lc "rails assets:precompile"
-    args:
-      chdir: /home/ec2-user/raisetech-live8-sample-app
+#   - name: Compiling scss
+#     shell: bash -lc "rails assets:precompile"
+#     args:
+#       chdir: /home/ec2-user/raisetech-live8-sample-app
       
-# ------------------------------------------------------------#
-# Install Nginx
-# ------------------------------------------------------------#
-  - name: Check if Nginx is installed
-    stat:
-      path: /etc/nginx/nginx.conf
-    register: nginx_check
+# # ------------------------------------------------------------#
+# # Install Nginx
+# # ------------------------------------------------------------#
+#   - name: Check if Nginx is installed
+#     stat:
+#       path: /etc/nginx/nginx.conf
+#     register: nginx_check
 
-  - name: Install Nginx
-    become_user: root
-    shell: amazon-linux-extras install nginx1 -y
-    when: not nginx_check.stat.exists
+#   - name: Install Nginx
+#     become_user: root
+#     shell: amazon-linux-extras install nginx1 -y
+#     when: not nginx_check.stat.exists
     
-  - name: Change directory authority
-    become_user: root
-    shell: |
-      cd /var/lib
-      chmod -R 775 nginx
+#   - name: Change directory authority
+#     become_user: root
+#     shell: |
+#       cd /var/lib
+#       chmod -R 775 nginx
 
-# ------------------------------------------------------------#
-# Add Nginx configuration file
-# ------------------------------------------------------------#
-  - name: Copy Nginx configuration file
-    become_user: root
-    template:
-      src: nginx.conf.j2  
-      dest: /etc/nginx/conf.d/nginx.conf
-    when: nginx_check.stat.exists
+# # ------------------------------------------------------------#
+# # Add Nginx configuration file
+# # ------------------------------------------------------------#
+#   - name: Copy Nginx configuration file
+#     become_user: root
+#     template:
+#       src: nginx.conf.j2  
+#       dest: /etc/nginx/conf.d/nginx.conf
+#     when: nginx_check.stat.exists
   
-  - name: Modify nginx.conf
-    become_user: root
-    replace:
-      path: /etc/nginx/nginx.conf
-      regexp: 'user nginx;'
-      replace: 'user ec2-user;'
+#   - name: Modify nginx.conf
+#     become_user: root
+#     replace:
+#       path: /etc/nginx/nginx.conf
+#       regexp: 'user nginx;'
+#       replace: 'user ec2-user;'
       
-# ------------------------------------------------------------#
-# Start Nginx 
-# ------------------------------------------------------------#
-  - name: start nginx
-    become_user: root
-    service:
-        name: nginx
-        state: started
-    when: nginx_check.stat.exists
+# # ------------------------------------------------------------#
+# # Start Nginx 
+# # ------------------------------------------------------------#
+#   - name: start nginx
+#     become_user: root
+#     service:
+#         name: nginx
+#         state: started
+#     when: nginx_check.stat.exists
 
-# ------------------------------------------------------------#
-# Start Unicorn
-# ------------------------------------------------------------# 
-  - name: start unicorn
-    shell: bash -lc "bundle exec unicorn -c config/unicorn.rb -D"
-    args:
-      chdir: /home/ec2-user/raisetech-live8-sample-app
+# # ------------------------------------------------------------#
+# # Start Unicorn
+# # ------------------------------------------------------------# 
+#   - name: start unicorn
+#     shell: bash -lc "bundle exec unicorn -c config/unicorn.rb -D"
+#     args:
+#       chdir: /home/ec2-user/raisetech-live8-sample-app
 
         

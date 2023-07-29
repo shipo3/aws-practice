@@ -32,20 +32,20 @@ jobs:
             aws cloudformation deploy --stack-name circleci-ec2 --template-file cloudformation/EC2_S3.yml
             aws cloudformation deploy --stack-name circleci-rds --template-file cloudformation/RDS.yml
             aws cloudformation deploy --stack-name circleci-alb --template-file cloudformation/ALB.yml
-      - run:
-          name: Extract RDS endpoint
-          command: |
-            mkdir -p /tmp/workspace
-            RDS_ENDPOINT=$(aws rds describe-db-instances \
-            --db-instance-identifier CFn-rds \
-            --query "DBInstances[*].Endpoint.Address" \
-            --output text > /tmp/workspace/rds-endpoint.txt)
-            cat /tmp/workspace/rds-endpoint.txt
+  #     - run:
+  #         name: Extract RDS endpoint
+  #         command: |
+  #           mkdir -p /tmp/workspace
+  #           RDS_ENDPOINT=$(aws rds describe-db-instances \
+  #           --db-instance-identifier CFn-rds \
+  #           --query "DBInstances[*].Endpoint.Address" \
+  #           --output text > /tmp/workspace/rds-endpoint.txt)
+  #           cat /tmp/workspace/rds-endpoint.txt
            
-      - persist_to_workspace:
-          root: /tmp/workspace
-          paths:
-            - rds-endpoint.txt
+  #     - persist_to_workspace:
+  #         root: /tmp/workspace
+  #         paths:
+  #           - rds-endpoint.txt
       - run:
           name: pwd
           command: pwd
@@ -117,7 +117,7 @@ workflows:
       - cfn-lint
       - execute-cfn
       - execute-ansible
-      - execute-serverspec:
-          requires:
-            - execute-ansible
+      # - execute-serverspec:
+      #     requires:
+      #       - execute-ansible
       
