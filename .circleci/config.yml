@@ -116,7 +116,7 @@ jobs:
           name: execute serverspece
           command: |
             cd serverspec
-            rake rspec
+            rake spec
             
 workflows:
   raisetech:
