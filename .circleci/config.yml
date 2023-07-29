@@ -91,23 +91,27 @@ jobs:
             
       - run:
           name: Test SSH connection
-          command: ssh -o "StrictHostKeyChecking no" -i ~/.ssh/id_rsa ec2-user@35.73.67.105 'exit'
-
-            
-      - run:
-          name: Run Serverspec tests
           command: |
-            echo "Host target" > ~/.ssh/config
-            echo "  HostName 35.73.67.105" >> ~/.ssh/config
-            echo "  User ec2-user" >> ~/.ssh/config
-            echo "  IdentityFile ~/.ssh/id_rsa" >> ~/.ssh/config
-            echo "  UserKnownHostsFile /dev/null" >> ~/.ssh/config
-            echo "  StrictHostKeyChecking no" >> ~/.ssh/config
-            echo "  PasswordAuthentication no" >> ~/.ssh/config
-            echo "  IdentitiesOnly yes" >> ~/.ssh/config
-            echo "  LogLevel FATAL" >> ~/.ssh/config
+            ssh -o "StrictHostKeyChecking no" -i ~/.ssh/id_rsa ec2-user@35.73.67.105 'exit'
+            pwd
+            ls -a
+          
+  
+            
+      # - run:
+      #     name: Run Serverspec tests
+      #     command: |
+      #       echo "Host target" > ~/.ssh/config
+      #       echo "  HostName 35.73.67.105" >> ~/.ssh/config
+      #       echo "  User ec2-user" >> ~/.ssh/config
+      #       echo "  IdentityFile ~/.ssh/id_rsa" >> ~/.ssh/config
+      #       echo "  UserKnownHostsFile /dev/null" >> ~/.ssh/config
+      #       echo "  StrictHostKeyChecking no" >> ~/.ssh/config
+      #       echo "  PasswordAuthentication no" >> ~/.ssh/config
+      #       echo "  IdentitiesOnly yes" >> ~/.ssh/config
+      #       echo "  LogLevel FATAL" >> ~/.ssh/config
 
-            TARGET_HOST=target bundle exec rspec
+      #       TARGET_HOST=target bundle exec rspec
             
       # - run: 
       #     name: execute serverspece
