@@ -91,7 +91,7 @@ jobs:
             
       - run:
           name: Test SSH connection
-          command: ssh -o "StrictHostKeyChecking no" -i ~/.ssh/id_rsa ec2-user@<EC2 instance IP address> 'exit'
+          command: ssh -o "StrictHostKeyChecking no" -i ~/.ssh/id_rsa ec2-user@35.73.67.105 'exit'
 
             
       # - run:
