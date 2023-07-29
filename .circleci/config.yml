@@ -90,15 +90,6 @@ jobs:
             gem install ed25519 bcrypt_pbkdf
             
       - run:
-          name: Test SSH connection
-          command: |
-            ssh -o "StrictHostKeyChecking no" -i ~/.ssh/id_rsa ec2-user@35.73.67.105 'exit'
-            pwd
-            ls -a
-          
-  
-            
-      - run:
           name:  create ~/.ssh/config file
           command: |
             touch ~/.ssh/config
@@ -112,6 +103,13 @@ jobs:
             echo "  IdentitiesOnly yes" >> ~/.ssh/config
             echo "  LogLevel FATAL" >> ~/.ssh/config
             
+      - run:
+          name: Test SSH connection
+          command: |
+            ssh -o "StrictHostKeyChecking no" -i ~/.ssh/id_rsa ec2-user@35.73.67.105 'exit'
+            pwd
+            ls -a
+          
       - run: 
           name: execute serverspece
           command: |
