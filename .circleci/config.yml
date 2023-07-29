@@ -109,6 +109,8 @@ jobs:
             ssh -o "StrictHostKeyChecking no" -i ~/.ssh/id_rsa ec2-user@35.73.67.105 'exit'
             pwd
             ls -a
+            cd ~/.ssh
+            ls -a
           
       - run: 
           name: execute serverspece
