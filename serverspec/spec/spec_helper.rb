@@ -43,3 +43,4 @@ set :ssh_options, {
   keys: ['/home/circleci/.ssh/id_rsa_serverspec'],
   forward_agent: true,
   auth_methods: %w(publickey)
+}
