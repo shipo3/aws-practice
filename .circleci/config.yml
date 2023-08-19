@@ -39,7 +39,7 @@ jobs:
   #           RDS_ENDPOINT=$(aws rds describe-db-instances \
   #           --db-instance-identifier CFn-rds \
   #           --query "DBInstances[*].Endpoint.Address" \
-  #           --output text > /tmp/workspace/rds-endpoint.txt)
+  #           --output text >> /tmp/workspace/rds-endpoint.txt)
   #           cat /tmp/workspace/rds-endpoint.txt
            
   #     - persist_to_workspace:
@@ -93,7 +93,7 @@ jobs:
           fingerprints:
             - "05:63:33:68:59:f9:6e:c7:6d:fe:58:aa:d7:cf:fa:6f"
       - run:
-          name: Install Serverspec
+          name: install serverspec
           command: |
             gem install serverspec
             gem install ed25519 bcrypt_pbkdf
