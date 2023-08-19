@@ -1,4 +1,9 @@
 ---
+# - name: Check SSH key
+#     stat:
+#       path: /home/circleci/.ssh/id_rsa_serverspec.pub
+#     register: key_check
+    
 - name: Add SSH key to EC2 instance
   hosts: 52.69.186.67  # <-- これはAnsibleが接続するEC2インスタンスのホスト名やIPアドレスです。
   remote_user: ec2-user # <-- EC2インスタンスにログインするユーザー名。
@@ -8,4 +13,4 @@
         user: ec2-user
         state: present
         key: "{{ lookup('file', '/home/circleci/.ssh/id_rsa_serverspec.pub') }}"
-        
+      # when: not keu_check.stat.exists

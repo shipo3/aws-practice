@@ -21,7 +21,7 @@ end
 host = ENV['TARGET_HOST']
 
 options = Net::SSH::Config.for(host)
-options[:user] ||= Etc.getlogin
+# options[:user] ||= Etc.getlogin
 
 # 接続先サーバのユーザ名
 # options[:user] ||= 'ec2_user'
@@ -29,5 +29,13 @@ options[:user] ||= Etc.getlogin
 # set :host,        options[:host_name] || host
 # set :ssh_options, options
 
-set :host,  '52.69.186.67'
-set :ssh_options, user: 'ec2-user', keys: '~/.ssh/id_rsa_serverspec'
+# set :host,  '52.69.186.67'
+# set :ssh_options, user: 'ec2-user', keys: '~/.ssh/id_rsa_serverspec'
+
+options[:user] ||= 'ec2-user'
+options[:keys] = ['/home/circleci/.ssh/id_rsa_serverspec']
+
+set :ssh_options, options
+
+# この行は環境によっては不要かもしれません。
+set :request_pty, true
