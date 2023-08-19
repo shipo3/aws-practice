@@ -82,9 +82,9 @@ jobs:
       - attach_workspace:
           at: /home/circleci/.ssh/
       - run:
-        name: Set correct permissions for SSH key
-        command: |
-          chmod 600 /home/circleci/.ssh/id_rsa_serverspec
+          name: Set correct permissions for SSH key
+          command: |
+            chmod 600 /home/circleci/.ssh/id_rsa_serverspec
 
       - run:
           name: install serverspec
