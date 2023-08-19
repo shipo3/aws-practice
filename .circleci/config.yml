@@ -108,9 +108,10 @@ jobs:
       #     fingerprints:
       #       - "05:63:33:68:59:f9:6e:c7:6d:fe:58:aa:d7:cf:fa:6f"
       - persist_to_workspace:
-          root: ~/.ssh/
+          root: /home/circleci/.ssh/
           paths:
             - id_rsa_serverspec
+
       - run:
           name: install serverspec
           command: |
