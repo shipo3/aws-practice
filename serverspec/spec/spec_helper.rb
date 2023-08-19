@@ -18,9 +18,9 @@ else
   # ASK_SUDO_PASSWORD設定がオフの場合はここに設定したパスワードを利用する
   set :sudo_password, ENV['SUDO_PASSWORD']
 end
-host = ENV['TARGET_HOST']
+# host = ENV['TARGET_HOST']
 
-options = Net::SSH::Config.for(host)
+# options = Net::SSH::Config.for(host)
 # options[:user] ||= Etc.getlogin
 
 # 接続先サーバのユーザ名
@@ -32,10 +32,14 @@ options = Net::SSH::Config.for(host)
 # set :host,  '52.69.186.67'
 # set :ssh_options, user: 'ec2-user', keys: '~/.ssh/id_rsa_serverspec'
 
-options[:user] ||= 'ec2-user'
-options[:keys] = ['/home/circleci/.ssh/id_rsa_serverspec']
+# options[:user] ||= 'ec2-user'
+# options[:keys] = ['/home/circleci/.ssh/id_rsa_serverspec']
 
-set :ssh_options, options
+# set :ssh_options, options
 
-# この行は環境によっては不要かもしれません。
-set :request_pty, true
+set :host, ENV['TARGET_HOST']
+set :ssh_options, {
+  user: 'ec2-user',
+  keys: ['/home/circleci/.ssh/id_rsa_serverspec'],
+  forward_agent: true,
+  auth_methods: %w(publickey)

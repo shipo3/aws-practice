@@ -107,10 +107,24 @@ jobs:
       # - add_ssh_keys:
       #     fingerprints:
       #       - "05:63:33:68:59:f9:6e:c7:6d:fe:58:aa:d7:cf:fa:6f"
+      - run:
+          name: cd
+          command: cd /home/circleci/.ssh/
+      - run:
+          name: ls
+          command: ls -a
       - persist_to_workspace:
-          root: /home/circleci/.ssh/
+          root: ~/.ssh/
           paths:
-            - id_rsa_serverspec
+            - id_rsa
+      - attach_workspace:
+          at: /home/circleci/.ssh/
+
+      - run:
+          name: Set correct permissions for SSH key
+          command: |
+            chmod 600 /home/circleci/.ssh/id_rsa
+
 
       - run:
           name: install serverspec
