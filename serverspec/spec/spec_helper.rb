@@ -21,9 +21,13 @@ end
 host = ENV['TARGET_HOST']
 
 options = Net::SSH::Config.for(host)
+options[:user] ||= Etc.getlogin
 
 # 接続先サーバのユーザ名
-options[:user] ||= 'ec2_user'
+# options[:user] ||= 'ec2_user'
 
-set :host,        options[:host_name] || host
-set :ssh_options, options
+# set :host,        options[:host_name] || host
+# set :ssh_options, options
+
+set :host,  '52.69.186.67'
+set :ssh_options, user: 'ec2-user', keys: '~/.ssh/id_rsa_serverspec'
