@@ -7,5 +7,5 @@
       authorized_key:
         user: ec2-user
         state: present
-        key: "{{ lookup('file', '/home/circleci/.ssh/id_rsa.pub') }}"
+        key: "{{ lookup('file', '/home/circleci/.ssh/id_rsa_serverspec.pub') }}"
         
