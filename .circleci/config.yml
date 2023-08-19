@@ -110,14 +110,14 @@ jobs:
       - persist_to_workspace:
           root: ~/.ssh/
           paths:
-            - id_rsa
+            - id_rsa_serverspec
       - attach_workspace:
           at: /home/circleci/.ssh/
 
-      - run:
-          name: Set correct permissions for SSH key
-          command: |
-            chmod 600 /home/circleci/.ssh/id_rsa_serverspec
+      # - run:
+      #     name: Set correct permissions for SSH key
+      #     command: |
+      #       chmod 600 /home/circleci/.ssh/id_rsa_serverspec
 
 
       - run:
