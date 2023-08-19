@@ -57,16 +57,16 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "05:63:33:68:59:f9:6e:c7:6d:fe:58:aa:d7:cf:fa:6f"
-      # - run:
-      #   name: create ssh config
-      #   command: |
-      #     touch ~/.ssh/config
-      #     echo 'Host ec2' >> ~/.ssh/config
-      #     echo '  HostName 52.69.186.67' >> ~/.ssh/config
-      #     echo '  User ec2-user' >> ~/.ssh/config
-      #     echo '  StrictHostKeyChecking no' >> ~/.ssh/config
-      #     echo '  PasswordAuthentication no' >> ~/.ssh/config
-      #     chmod 600 ~/.ssh/config
+      - run:
+        name: create ssh config
+        command: |
+          touch ~/.ssh/config
+          echo 'Host ec2' >> ~/.ssh/config
+          echo '  HostName 52.69.186.67' >> ~/.ssh/config
+          echo '  User ec2-user' >> ~/.ssh/config
+          echo '  StrictHostKeyChecking no' >> ~/.ssh/config
+          echo '  PasswordAuthentication no' >> ~/.ssh/config
+          chmod 600 ~/.ssh/config
       # - run:
       #     name: pwd
       #     command: pwd 
