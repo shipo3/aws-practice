@@ -91,6 +91,7 @@ jobs:
           name: Generate SSH Key
           command: |
             echo "yes" | ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa_serverspec -N ""
+            chmod 600 /home/circleci/.ssh/id_rsa_serverspec
             echo "Generated SSH keys:"
             ls ~/.ssh/id_rsa*
 
