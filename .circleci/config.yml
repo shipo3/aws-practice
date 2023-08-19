@@ -98,7 +98,7 @@ jobs:
       - run:
           name: Add SSH key to EC2
           command: |
-            ansible-playbook -i 'ec2-instance,' add_key.yml
+            ansible-playbook -i '52.69.186.67,' add_key.yml
           
   execute-serverspec:
     executor: ruby/default
