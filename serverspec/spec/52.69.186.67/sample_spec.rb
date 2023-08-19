@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-listen_port = 80
+#listen_port = 80
 
 describe package('nginx') do
   it { should be_installed }
