@@ -9,7 +9,7 @@ end
 
 #Unicornがインストールされていること
 describe command('gem list unicorn') do
-  its(:stdout) { should match /unicorn/ }
+  its(:stdout) { should match /unicorn (6.1.0)/ }
   its(:exit_status) { should eq 0 }
 end
 
