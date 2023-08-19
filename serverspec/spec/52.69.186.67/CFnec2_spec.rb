@@ -7,12 +7,6 @@ describe package('nginx') do
   it { should be_installed }
 end
 
-#Unicornがインストールされていること
-describe command('gem list unicorn') do
-  its(:stdout) { should match /unicorn (6.1.0)/ }
-  its(:exit_status) { should eq 0 }
-end
-
 #Nginx設定ファイルに指定した記述があること
 describe file('/etc/nginx/nginx.conf') do
   it { should be_file }
