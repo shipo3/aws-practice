@@ -110,7 +110,7 @@ jobs:
       - persist_to_workspace:
           root: ~/.ssh/
           paths:
-            - id_rsa
+            - id_rsa_serverspec
       - run:
           name: install serverspec
           command: |
