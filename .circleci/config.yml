@@ -57,11 +57,11 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "05:63:33:68:59:f9:6e:c7:6d:fe:58:aa:d7:cf:fa:6f"
-      - run:
-        name: create ~/.ssh/config file
-        command: |
-            touch ~/.ssh/config
-            echo 'Host ec2' > ~/.ssh/config
+      # - run:
+      #   name: create ~/.ssh/config file
+      #   command: |
+      #       touch ~/.ssh/config
+      #       echo 'Host ec2' > ~/.ssh/config
       #     echo 'Host ec2' >> ~/.ssh/config
       #     echo '  HostName 52.69.186.67' >> ~/.ssh/config
       #     echo '  User ec2-user' >> ~/.ssh/config
@@ -85,14 +85,32 @@ jobs:
       - ansible-playbook/playbook:
           playbook: ansible/playbook.yml
           playbook-options: '-i ansible/inventory'
+      
+      # 鍵の生成
+      - run:
+          name: Generate SSH Key
+          command: |
+            ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa -N ""
+            echo "Generated SSH keys:"
+            ls ~/.ssh/id_rsa*
+
+      # Ansibleで公開鍵をEC2のauthorized_keysに追加
+      - run:
+          name: Add SSH key to EC2
+          command: |
+            ansible-playbook -i 'ec2-instance,' add_key.yml
           
   execute-serverspec:
     executor: ruby/default
     steps:
       - checkout
-      - add_ssh_keys:
-          fingerprints:
-            - "05:63:33:68:59:f9:6e:c7:6d:fe:58:aa:d7:cf:fa:6f"
+      # - add_ssh_keys:
+      #     fingerprints:
+      #       - "05:63:33:68:59:f9:6e:c7:6d:fe:58:aa:d7:cf:fa:6f"
+      - persist_to_workspace:
+          root: ~/.ssh/
+          paths:
+            - id_rsa
       - run:
           name: install serverspec
           command: |

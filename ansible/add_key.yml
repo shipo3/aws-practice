@@ -1,0 +1,11 @@
+---
+- name: Add SSH key to EC2 instance
+  hosts: ec2-instance  # <-- これはAnsibleが接続するEC2インスタンスのホスト名やIPアドレスです。
+  remote_user: ec2-user # <-- EC2インスタンスにログインするユーザー名。
+  tasks:
+    - name: Add the public key
+      authorized_key:
+        user: ec2-user
+        state: present
+        key: "{{ lookup('file', '/home/circleci/.ssh/id_rsa.pub') }}"
+        
