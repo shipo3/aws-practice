@@ -40,7 +40,7 @@ end
 set :host, ENV['TARGET_HOST']
 set :ssh_options, {
   user: 'ec2-user',
-  keys: ['/home/circleci/.ssh/id_rsa'],
+  keys: ['/home/circleci/.ssh/id_rsa_serverspec'],
   forward_agent: true,
   auth_methods: %w(publickey)
 }
