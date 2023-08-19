@@ -111,7 +111,7 @@ jobs:
       - persist_to_workspace:
           root: ~/.ssh/
           paths:
-            - id_rsa_serverspec
+            - id_rsa
       - attach_workspace:
           at: /home/circleci/.ssh/
 
