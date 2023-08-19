@@ -109,9 +109,7 @@ workflows:
     jobs:
       - cfn-lint
       - execute-cfn
-      - execute-ansible:
-          requires:
-            - execute-cfn
+      - execute-ansible
       - execute-serverspec:
           requires:
             - execute-ansible
