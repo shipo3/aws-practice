@@ -87,7 +87,7 @@ jobs:
             chmod 600 /home/circleci/.ssh/id_rsa_serverspec
 
       - run:
-          name: install serverspec
+          name: install serverspecs
           command: |
             gem install serverspec
             gem install ed25519 bcrypt_pbkdf
