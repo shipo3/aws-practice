@@ -98,7 +98,7 @@ execute-ansible:
           playbook-options: '-u ec2user -i ansible/inventory --private_key ~/.ssh/使用する秘密鍵のファイル名'
 ```
 ＊playbook-options: '-i ansible/inventory'　でもOK  
-＊playbook-options: '-i ansible/inventory --syntax-check'　でドライランできる
+＊playbook-options: '-i ansible/inventory --syntax-check'　でドライランできる  
 ＊playbook-options: '-vvv -i ansible/inventory'　でデバックできる
 #### 2-6. GitHubにpushする ####
 
