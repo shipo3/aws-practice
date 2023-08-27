@@ -119,7 +119,7 @@ To use this orb, an organization admin must opt-in to using third party orbs in 
 ```
 ⇒　Settings＞Security　にてUncertified Orbsを許可する
 - AnsibleとPython2ではAnsible2.13.5が使えないエラー
-コントロールノードのCloud9で**`python --version`**と入力すると「Python 3.7.16」になっている、「Python Support」も3になっているけど・・⇒　Ansible側を2.9.23にして解消
+コントロールノードのCloud9で`python --version`と入力すると「Python 3.7.16」になっている、「Python Support」も3になっているけど・・⇒　Ansible側を2.9.23にして解消
 - `ansible/playbook.yml`が見つからないエラー
 ⇒　ファイルは存在しているので、`chmod 755 playbook.yml`　にて実行権限を付与しても同じ
 ⇒　Playbook.ymlを作り直したが同じ
@@ -177,7 +177,7 @@ https://blog.katsubemakito.net/mysql/mysql-update-error-gpg
 ⇒　「rpm -ivh」コマンドでダウンロード＆インストールに変更して、インストールOK！
 
 - 次のタスク実行時に既にインストールされているエラーで止まったので「rpm -Uvh」に変更したが同じ　https://blog.apar.jp/linux/9868/
-⇒　**`creates`** パラメータを使用して既にインストールされているかどうかをチェックする処理を追加して解消！
+⇒　`creates`*パラメータを使用して既にインストールされているかどうかをチェックする処理を追加して解消！
 - `Failed to build gem native extension.`　が表示され「Install Bundler」が失敗
 ⇒　手動デプロイ時同様、EC2のボリュームを16GBに変更したら完了できた。
 ＊次回はEC2のスタックでボリューム増設を設定しよう！

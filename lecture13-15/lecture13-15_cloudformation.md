@@ -1,4 +1,3 @@
-# 最終課題 #
 ## 1. CircleCIにてCloudformationを実行させる ##
 #### 1-1 CircleCIとGitHubの連携 ####
  - CircleCIにGitHubアカウントでログインする
