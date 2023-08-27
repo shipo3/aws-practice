@@ -89,10 +89,10 @@ execute-cfn:
 ![CFn構築成功](../images/CFn-success.png)
 
 ### 遭遇したエラー ###
--  構文エラー
+-  構文エラー  
 ⇒　`--template-file`の記載がファイル毎に必要だった
-- `Failed to create/update the stack.`　が表示される   
-  ⇒　失敗に至るまでのイベントのリストを取得する以下コマンドを実行
+- `Failed to create/update the stack.`　が表示される  
+⇒　失敗に至るまでのイベントのリストを取得する以下コマンドを実行
   `aws cloudformation describe-stack-events --stack-name stack-for-circleci`  
 - `Unknown options:` が表示される
 ⇒　ロールバック完了の記載のみ  
