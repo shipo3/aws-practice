@@ -1,5 +1,5 @@
-## AWS構成図 ##
-### 最終課題にて作成した環境の構成図 ###
+# 最終課題 #
+## 最終課題にて作成した環境の構成図 ##
 
 ![lecture13-15_AWSConfigurationChart](../images/lecture13-15_AWSConfigurationChart.png)
 
