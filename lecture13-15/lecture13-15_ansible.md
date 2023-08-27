@@ -7,6 +7,7 @@
 - SSH接続設定
 - プラグインの設定
 - Ansibleの動作オプションの設定
+
 **「inventory」ファイル**
 - Ansibleが管理する対象のホスト（サーバー）のリストとその属性（グループ、変数など）を定義するファイル  
 必須ではないが、非常に便利なツール
@@ -96,7 +97,7 @@ execute-ansible:
           playbook: ansible/playbook.yml
           playbook-options: '-u ec2user -i ansible/inventory --private_key ~/.ssh/使用する秘密鍵のファイル名'
 ```
-＊playbook-options: '-i ansible/inventory'　でもOK
+＊playbook-options: '-i ansible/inventory'　でもOK  
 ＊playbook-options: '-i ansible/inventory --syntax-check'　でドライランできる
 ＊playbook-options: '-vvv -i ansible/inventory'　でデバックできる
 #### 2-6. GitHubにpushする ####
@@ -119,27 +120,28 @@ To use this orb, an organization admin must opt-in to using third party orbs in 
 ```
 ⇒　Settings＞Security　にてUncertified Orbsを許可する
 - AnsibleとPython2ではAnsible2.13.5が使えないエラー
-コントロールノードのCloud9で`python --version`と入力すると「Python 3.7.16」になっている、「Python Support」も3になっているけど・・⇒　Ansible側を2.9.23にして解消
-- `ansible/playbook.yml`が見つからないエラー
-⇒　ファイルは存在しているので、`chmod 755 playbook.yml`　にて実行権限を付与しても同じ
-⇒　Playbook.ymlを作り直したが同じ
-⇒　`ansible-playbook/playbook`コマンドの指定を絶対パスにしてみたが同じ「/home/ec2-user/environment/aws-practice/ansible/playbook.yml」  
-⇒　パイプラインの「Set inventory」に「.ansible-playbook-circleci/inventory」フォルダ記載があったので**`ansible-playbook/playbook`**コマンドの指定を「.ansible-playbook-circleci/playbook.yml」にしてみたが同じ
+コントロールノードのCloud9で`python --version`と入力すると「Python 3.7.16」になっている、「Python Support」も3になっているけど・・  
+⇒　Ansible側を2.9.23にして解消
+- `ansible/playbook.yml`が見つからないエラー  
+⇒　ファイルは存在しているので、`chmod 755 playbook.yml`　にて実行権限を付与しても同じ  
+⇒　Playbook.ymlを作り直したが同じ  
+⇒　`ansible-playbook/playbook`コマンドの指定を絶対パスにしてみたが同じ「/home/ec2-user/environment/aws-practice/ansible/playbook.yml」    
+⇒　パイプラインの「Set inventory」に「.ansible-playbook-circleci/inventory」フォルダ記載があったので*ansible-playbook/playbook`*マンドの指定を「.ansible-playbook-circleci/playbook.yml」にしてみたが同じ  
 ⇒　「execute-ansible:」に「- checkout」が無いことが判明！
 「- checkout」はGitHubに配置したコードをexecuterに取り込む為の重要なStepであることが分かった
-- UNREACHABLE! と表示され、ホスト：EIPでポート：22への接続がタイムアウトとなる
-⇒　ローカルPCからは同じEIPにSSH接続できたので、keyの問題と判明
-⇒　エラーメッセージ `"Failed to connect to the host via ssh: percent_expand: invalid format"` は、パーセント記号 (**`%`**) のエスケープが正しく行われていないことと判明
+- UNREACHABLE! と表示され、ホスト：EIPでポート：22への接続がタイムアウトとなる  
+⇒　ローカルPCからは同じEIPにSSH接続できたので、keyの問題と判明  
+⇒　エラーメッセージ `"Failed to connect to the host via ssh: percent_expand: invalid format"` は、パーセント記号 (**`%`**) のエスケープが正しく行われていないことと判明  
 ⇒　確かに、pemファイル名に (**`%`**) を使っていたので、**`%%`** に置き換えてSuccess！
-- `"curl: option -: is unknown",`が表示されてNodeインストールが失敗
-⇒　オプションを「-sL」⇒「-fsSL」に変更⇒　パイプの処理がうまくいかないエラー
+- `"curl: option -: is unknown",`が表示されてNodeインストールが失敗  
+⇒　オプションを「-sL」⇒「-fsSL」に変更⇒　パイプの処理がうまくいかないエラー  
 ⇒　`command`モジュールを`shell`に変更してSuccess！
 　　・シェルの特性を必要としない単純なコマンドの実行には command モジュール  
 　　・シェルの機能（例えば、パイプラインや変数展開）を使用するコマンドの実行には shell モジュール
-- 「.rbenv」フォルダが作成されない
+- 「.rbenv」フォルダが作成されない  
 ⇒　Ansibleで`~`をフルパスにして解消！  
-- `rbenv: command not found`　が表示され、Rubyがインストールされない
-⇒　ローカルPCからEC2に入ると「rbenv -v　で1.2.0」が表示される
+- `rbenv: command not found`　が表示され、Rubyがインストールされない  
+⇒　ローカルPCからEC2に入ると「rbenv -v　で1.2.0」が表示される  
 ⇒　ansible経由の場合は、/bin/shシェルが使用され.bash_profileや.bashrcを読み込む、/bin/bashシェルが使用されないためと判明！
 
 https://www.bunkei-programmer.net/entry/2015/05/16/162020
@@ -158,50 +160,50 @@ https://www.bunkei-programmer.net/entry/2015/05/16/162020
 executable = /bin/bash -l
 ```
 
-- 更に.rbenvフォルダに「shims」「versions」がない為`rbenv: command not found`　が表示されることが判明
-⇒　パスを正しく設定することで、rbenvが「shims」「versions」が作成される
-⇒　ローカルPCからEC2内を確認すると`mkdir: cannot create directory ‘/home/ec2-user/.rbenv/shims’: Permission denid`が表示されていたので、権限がなくて作成されていない
+- 更に.rbenvフォルダに「shims」「versions」がない為`rbenv: command not found`　が表示されることが判明  
+⇒　パスを正しく設定することで、rbenvが「shims」「versions」が作成される  
+⇒　ローカルPCからEC2内を確認すると`mkdir: cannot create directory ‘/home/ec2-user/.rbenv/shims’: Permission denid`が表示されていたので、権限がなくて作成されていない  
 ⇒　playbook全体の権限をrootにしていた為、rbenvもrootになっていた。全体をec2-userにして、必要な箇所をroot指定することで解消！
-- [Install Rails]タスクが`skipping`され、インストールされなかった
-⇒　[Check if Rails is installed]の正規表現を「'^rails (7.0.4)$’」⇒「rails | grep 7.0.4」に変更
-⇒　`non-zero return code`　にて処理がストップしたので、「ignore_errors: yes」を追加
+- [Install Rails]タスクが`skipping`され、インストールされなかった  
+⇒　[Check if Rails is installed]の正規表現を「'^rails (7.0.4)$’」⇒「rails | grep 7.0.4」に変更  
+⇒　`non-zero return code`　にて処理がストップしたので、「ignore_errors: yes」を追加  
 ⇒　途中で止まらなくなったが、`skipping`されたwhenモジュールにTypoが判明し、解消！
-- `Failed to find required executable gem in paths` と表示され、Railsインストールに失敗する  
+- `Failed to find required executable gem in paths` と表示され、Railsインストールに失敗する    
 ⇒　`user_install:no`に設定して`~/.rbenv/`以下にインストールされるように`executable:`でgemのパスを指定してSuccess！
 【参考情報】
 https://oki2a24.com/2017/05/12/how-to-use-gem-installed-with-rbenv-in-ansible/
 https://qiita.com/itiut@github/items/3e1aaa4f2b5d95efb319
 - `Download MySQL repository RPM`　にてエラー403となる（アクセスが許可されてない。。）
 ⇒　まずMySQLのリポジトリのGPG公開鍵を取得し、インストールするパッケージの署名を検証する必要であることが判明⇒　「Import MySQL GPG key」タスクを追加したが、403エラー。。
-https://blog.katsubemakito.net/mysql/mysql-update-error-gpg
+https://blog.katsubemakito.net/mysql/mysql-update-error-gpg  
 ⇒　「rpm -ivh」コマンドでダウンロード＆インストールに変更して、インストールOK！
 
-- 次のタスク実行時に既にインストールされているエラーで止まったので「rpm -Uvh」に変更したが同じ　https://blog.apar.jp/linux/9868/
+- 次のタスク実行時に既にインストールされているエラーで止まったので「rpm -Uvh」に変更したが同じ　https://blog.apar.jp/linux/9868/  
 ⇒　`creates`*パラメータを使用して既にインストールされているかどうかをチェックする処理を追加して解消！
-- `Failed to build gem native extension.`　が表示され「Install Bundler」が失敗
+- `Failed to build gem native extension.`　が表示され「Install Bundler」が失敗  
 ⇒　手動デプロイ時同様、EC2のボリュームを16GBに変更したら完了できた。
 ＊次回はEC2のスタックでボリューム増設を設定しよう！
 - `No such file or directory` が表示され「config/database.yml.sample」のファイル名を変更できない⇒　フルパスにしてSuccess！
 
-- `No such file or directory` が表示され「rails db:create」が失敗する
-⇒　which rails コマンドでrails コマンドの実行パスを確認  
-⇒　手動デプロイアプリと同じ場所に存在していた「/.rbenv/shims/rails」
-⇒　bundlerを経由するようにコマンド`bundle exec rails db:create`にしても同じエラ-
+- `No such file or directory` が表示され「rails db:create」が失敗する  
+⇒　which rails コマンドでrails コマンドの実行パスを確認   
+⇒　手動デプロイアプリと同じ場所に存在していた「/.rbenv/shims/rails」  
+⇒　bundlerを経由するようにコマンド`bundle exec rails db:create`にしても同じエラ-  
 ⇒　command⇒　shellに変えたら、Success！
 ＊シェルの機能が必要な場合やコマンドの結果を変数として利用したい場合は、`shell`モジュールを使用することが適しています。
 
-- `rails s -b 0.0.0.0`でアプリ起動に成功しているが、ブラウザからアクセスすると「このサイトにアクセスできません」となる
+- `rails s -b 0.0.0.0`でアプリ起動に成功しているが、ブラウザからアクセスすると「このサイトにアクセスできません」となる  
 ⇒　ローカルPCからアクセスしてアプリ起動すると閲覧出来る
 
 **以下に当たる**  
 ```bash
 https://pikawaka.com/rails/rails-s 
 このサーバ自体は、開発用のPC上に作られたものです。外部に公開しているわけではないので、他のPCからブラウザ経由でアプリケーションにアクセスすることはできません。
-```
+```  
 ⇒　今回はデプロイが目的のため、pumaではなくNginx＋Unicornで起動させる必要あり  
-- `bundle: command not found`　 が表示され、unicornが起動できない
+- `bundle: command not found`　 が表示され、unicornが起動できない  
 ⇒　「bash -lc」を付けることで解消
-- `Could not locate Gemfile or .bundle/ directory`が表示され、unicornが起動できない
+- `Could not locate Gemfile or .bundle/ directory`が表示され、unicornが起動できない  
 ⇒　`args:`モジュールでアプリディレクトリを指定することで起動OK！
 
 ### この作業から学んだこと ###
