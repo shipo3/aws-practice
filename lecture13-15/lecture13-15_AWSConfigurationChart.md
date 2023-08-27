@@ -8,6 +8,6 @@
 * EC2内の構成を描画する方法
 
 ## 目次 ##
-### [1. CircleCIにてCloudformationを実行させる](lecture13-15_cloudformation.md) ###
-### [2. CircleCIにてAnsibleを実行させアプリをデプロイする](lecture13-15_ansible.md) ###
-### [3. CircleCIにてServerSpecを実行させる](lecture13-15_serverspec.md) ###
+#### [1. CircleCIにてCloudformationを実行させる](lecture13-15_cloudformation.md) ####
+#### [2. CircleCIにてAnsibleを実行させアプリをデプロイする](lecture13-15_ansible.md) ####
+#### [3. CircleCIにてServerSpecを実行させる](lecture13-15_serverspec.md) ####
