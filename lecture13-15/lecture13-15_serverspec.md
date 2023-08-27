@@ -2,19 +2,19 @@
 #### 3-1. リポジトリのrootにServerSpecのディレクトリ・各ファイルを作成する ####
 **「/spec/test-server」ディレクトリ**
 - テスト対象サーバーが判別できる名前にする
-- この名前がRakefileでホスト名として使用される
+- この名前がRakefileでホスト名として使用される  
 **「/spec/test-server/sample_spec.rb」ファイル**
-- 実際にテストする内容を記載するファイル
+- 実際にテストする内容を記載するファイル  
 **「/spec/spec_helper.rb」ファイル**
 - テストに関する全般的な設定ファイル
 - ローカルでのテストかSSH接続でのテストかによって記載が異なる
-- 今回はSSH接続にて実施
+- 今回はSSH接続にて実施  
 **「Rakefile」ファイル**
 - テスト実行のためのタスク定義ファイル
 - ./specの下にある各サブディレクトリに対して、Serverspecのテストを個別に実行するためのRakeタスクを記述したファイル
 - ./spec以下のディレクトリをホスト名として使用している
 
-### 3-2. config.yml＞AnsibleのjobにServerspecで使用する鍵を生成＆保存する記述を追加する ###
+### 3-2. 「「config.yml＞Ansible」にServerspecで使用する鍵を生成＆保存する記述を追加する ###
 ・鍵の生成
 ```bash
 - run:
@@ -39,7 +39,7 @@
           paths:
             - id_rsa_serverspec
 ```
-### 3-3. config.yml＞Serverspecのjobの中にAnsibleで保存したキーを使用する鍵を生成＆保存する記述を追加する ###
+### 3-3. 「config.yml＞Serverspec」にAnsibleで保存したキーを使用する記述を追加する ###
 ・Serverspecジョブで鍵をアタッチ
 ```bash
 - attach_workspace:
@@ -52,7 +52,7 @@
           command: |
             chmod 600 /home/circleci/.ssh/id_rsa_serverspec
 ```
-### 3-4. config.yml＞Serverspecのjobの中にServerspecインストール⇒実行までを記述する ###
+### 3-4. 「「config.yml＞Serverspec」にServerspecインストール⇒実行までを記述する ###
 ```bash
 - run:
           name: install serverspecs
@@ -105,28 +105,28 @@ end
 ![Serverspecジョブ成功](../images/Serverspe-success.png)
 
 ### 遭遇したエラー ###
-- インストール成功したが、`No Rakefile found`　が表示されてテストが実行されない
-　⇒　テスト実行前に`cd serverspec`を追加して解消！
-- 「NotImplementedError:サポートされていないキータイプ `ssh-ed25519'」エラーが表示されてテストが失敗する。。
-　⇒　「ssh-ed25519'」や「ed25519」サポートのためにnet-sshに以下のgemが必要
+- インストール成功したが、`No Rakefile found`　が表示されてテストが実行されない  
+⇒　テスト実行前に`cd serverspec`を追加して解消！
+- 「NotImplementedError:サポートされていないキータイプ `ssh-ed25519'」エラーが表示されてテストが失敗する。。  
+⇒　「ssh-ed25519'」や「ed25519」サポートのためにnet-sshに以下のgemが必要
 　　　＊ed25519 (バージョンは1.2以上、2.0未満)
-　　　＊bcrypt_pbkdf (バージョンは1.0以上、2.0未満)
-　⇒　**`gem install ed25519 bcrypt_pbkdf`**　を追加して解消！
-- `Could not locate Gemfile or .bundle/ directory`　が表示される
-　⇒　「~/.ssh/config」ファイルを作成したことで解消！
-- 「Net::SSH::AuthenticationFailed:」が表示されて対象とするサーバーにログインできない
-　⇒　以下がチェックポイント
+　　　＊bcrypt_pbkdf (バージョンは1.0以上、2.0未満)  
+⇒　**`gem install ed25519 bcrypt_pbkdf`**　を追加して解消！
+- `Could not locate Gemfile or .bundle/ directory`　が表示される  
+⇒　「~/.ssh/config」ファイルを作成したことで解消！
+- 「Net::SSH::AuthenticationFailed:」が表示されて対象とするサーバーにログインできない  
+⇒　以下がチェックポイント
 ```java
 1. **ユーザー名が正しい**：SSH接続に使用するユーザー名がテスト対象のサーバーで有効であることを確認してください。一部の環境では、特定のユーザー名（たとえば`ubuntu`や`ec2-user`）がデフォルトで設定されています。ユーザー名が間違っていると、認証エラーが発生します。
 
 2. **秘密鍵が正しい**：SSH接続に使用する秘密鍵がテスト対象のサーバーで有効で、かつその秘密鍵に対応する公開鍵がサーバーの`~/.ssh/authorized_keys`ファイルに追加されていることを確認してください。秘密鍵が間違っている、または公開鍵がサーバーに設定されていないと、認証エラーが発生します。
 
 3. **接続設定が正しい**：CircleCIの設定ファイル（`.circleci/config.yml`）や`spec/spec_helper.rb`などでSSH接続の設定を行っている部分が正しいことを確認してください。たとえば、`set :host`や`set :ssh_options`で設定する接続先のホスト名、ユーザー名、秘密鍵のパスなどが間違っていると、認証エラーが発生します。
-```
-　⇒　Circleci上で.ssh内を確認して秘密鍵のパスが判明　
-　⇒　Ansibleの環境構築は今まで通りfingerprintsを用い、Serverspecのjobでは鍵を新規作成することにした　
-- Ansibleで鍵生成は成功するが、Serverspecで見つからない
-　⇒　`persist_to_workspace`ステップはAnsibleのjob、`attach_workspace`ステップはServerspecのjobに分けて解決した！
+```  
+⇒　Circleci上で.ssh内を確認して秘密鍵のパスが判明  
+⇒　Ansibleの環境構築は今まで通りfingerprintsを用い、Serverspecのjobでは鍵を新規作成することにした　
+- Ansibleで鍵生成は成功するが、Serverspecで見つからない  
+⇒　`persist_to_workspace`ステップはAnsibleのjob、`attach_workspace`ステップはServerspecのjobに分けて解決した！
 
 ### この作業から学んだこと ###
 * serverspec-initを使わないファイル作成方法
