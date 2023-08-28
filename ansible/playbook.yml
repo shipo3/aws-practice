@@ -1,0 +1,311 @@
+---
+- hosts: server
+  become: true
+  become_user: ec2-user
+  tasks:
+  
+# ------------------------------------------------------------#
+# Update Package
+# ------------------------------------------------------------#
+  - name: package update
+    become_user: root
+    yum:
+      name: "*"
+      state: latest
+      
+# ------------------------------------------------------------#
+# Install Package For Rails
+# ------------------------------------------------------------#
+  - name: Install required packages
+    become_user: root
+    yum:
+      name:
+        - gcc-c++
+        - make
+        - patch
+        - git
+        - curl
+        - zlib-devel
+        - openssl-devel
+        - ImageMagick-devel
+        - readline-devel
+        - libcurl-devel
+        - libffi-devel
+        - libicu-devel
+        - libxml2-devel
+        - libxslt-devel 
+      state: present
+      
+# ------------------------------------------------------------#
+# Install Node.js
+# ------------------------------------------------------------#
+  - name: Check if Node.js Yum repo file exists
+    stat:
+      path: /etc/yum.repos.d/nodesource-el7.repo
+    register: nodesource_repo
+    
+  - name: Add Yum repo for Node.js
+    become_user: root
+    shell: "curl -fsSL https://rpm.nodesource.com/setup_14.x | sudo bash -"
+    when: not nodesource_repo.stat.exists
+    changed_when: false
+    
+  - name: Install Node.js
+    become_user: root
+    yum:
+      name: nodejs
+      state: latest
+      
+# ------------------------------------------------------------#
+# Install Yarn
+# ------------------------------------------------------------#
+  - name: Check if Yarn Yum repo file exists
+    stat:
+      path: /etc/yum.repos.d/yarn.repo
+    register: yarn_repo
+    
+  - name: Add Yum repo for Yarn
+    become_user: root
+    shell: "curl -fsSL https://dl.yarnpkg.com/rpm/yarn.repo | sudo tee /etc/yum.repos.d/yarn.repo"
+    when: not yarn_repo.stat.exists
+    changed_when: false
+    
+  - name: Install Yarn
+    become_user: root
+    yum:
+      name: yarn
+      state: latest
+  
+# ------------------------------------------------------------#
+# Install rvenv
+# ------------------------------------------------------------#   
+
+  - name: Clone rbenv repository
+    git:
+      repo: "https://github.com/sstephenson/rbenv.git"
+      dest: "/home/ec2-user/.rbenv"
+      version: master
+
+  - name: Add rbenv path to .bash_profile
+    lineinfile:
+      path: /home/ec2-user/.bash_profile
+      line: 'export PATH="$HOME/.rbenv/bin:$PATH"'
+      create: yes
+
+  - name: Initialize rbenv
+    lineinfile:
+      path: /home/ec2-user/.bash_profile
+      line: 'eval "$(rbenv init -)"'
+      create: yes
+
+  - name: Load .bash_profile
+    shell: bash -lc "source /home/ec2-user/.bash_profile"
+    
+  - name: Install rbenv plugins
+    git:
+      repo: https://github.com/sstephenson/ruby-build.git
+      dest: "/home/ec2-user/.rbenv/plugins/ruby-build"
+      
+# ------------------------------------------------------------#
+# Install Ruby
+# ------------------------------------------------------------#
+  - name: Check if Ruby is installed
+    stat:
+      path: /home/ec2-user/.rbenv/versions/3.1.2
+    register: ruby_check
+      
+  - name: Install Ruby 3.1.2
+    shell: bash -lc "rbenv install 3.1.2"
+    when: not ruby_check.stat.exists
+    
+  - name: Rehash rbenv
+    shell: bash -lc "rbenv rehash"
+ 
+  - name: Set global Ruby version to 3.1.2
+    shell: bash -lc "rbenv global 3.1.2"
+    
+# ------------------------------------------------------------#
+# Install Rails
+# ------------------------------------------------------------#
+  - name: Check if Rails is installed
+    shell: bash -lc "gem list -e rails | grep 7.0.4"
+    register: rails_check
+    changed_when: no
+    ignore_errors: yes
+
+  - name: Install Rails 7.0.4
+    gem:
+      name: rails
+      version: 7.0.4
+      user_install: no
+      executable: /home/ec2-user/.rbenv/shims/gem
+    when: rails_check is failed
+    
+# ------------------------------------------------------------#
+# Install MySQL
+# ------------------------------------------------------------#
+
+  - name: Import MySQL GPG key
+    become_user: root
+    shell: rpm --import "https://repo.mysql.com/RPM-GPG-KEY-mysql-2022"
+    args:
+      creates: /var/lib/mysql/mysql80-community-release-el7-7.noarch.rpm
+
+  - name: Download and install MySQL repository package
+    become_user: root
+    shell: rpm -Uvh "https://dev.mysql.com/get/mysql80-community-release-el7-7.noarch.rpm"
+    args:
+      creates: /etc/yum.repos.d/mysql-community.repo
+      
+  - name: Install mysql-devel
+    become_user: root
+    yum:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - mysql-server
+      - mysql-devel
+      - mysql-community-devel
+      - mysql-community-server
+      
+# ------------------------------------------------------------#
+# Clone APP
+# ------------------------------------------------------------#
+      
+  - name: Check if the folder exists
+    stat:
+      path: /home/ec2-user/raisetech-live8-sample-app
+    register: folder_check
+
+  - name: Clone repository
+    git:
+      repo: https://github.com/yuta-ushijima/raisetech-live8-sample-app.git
+      dest: /home/ec2-user/raisetech-live8-sample-app
+    when: not folder_check.stat.exists
+      
+  - name: Change directory
+    shell: cd raisetech-live8-sample-app
+
+  - name: Install Bundler
+    shell: bash -lc "bundle install"
+    args:
+      chdir: raisetech-live8-sample-app
+
+# ------------------------------------------------------------#
+# Change RDS connection information
+# ------------------------------------------------------------#
+  - name: Check if database.yml.sample exists
+    stat:
+      path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml.sample
+    register: file_check
+ 
+  - name: Rename database.yml.sample
+    command: mv /home/ec2-user/raisetech-live8-sample-app/config/database.yml.sample /home/ec2-user/raisetech-live8-sample-app/config/database.yml
+    when: file_check.stat.exists
+
+  - name: Read database.yml
+    slurp:
+      src: /home/ec2-user/raisetech-live8-sample-app/config/database.yml
+    register: database_yml
+
+  - name: Modify database.yml (socket)
+    replace:
+      path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml
+      regexp: 'socket:.*'
+      replace: 'socket: /var/lib/mysql/mysql.sock'
+    when: "'socket:' in database_yml.content | b64decode"
+
+  - name: Modify database.yml (password)
+    replace:
+      path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml
+      regexp: 'password:.*'
+      replace: 'password: kagiu310Fuwauu8+'
+    when: "'password:' in database_yml.content | b64decode"
+   
+  - name: Modify database.yml (host)
+    replace:
+      path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml
+      regexp: 'host:.*'
+      replace: 'host: cfn-rds.ceyjn4b1ovyk.ap-northeast-1.rds.amazonaws.com'
+    when: "'host:' in database_yml.content | b64decode"
+
+# ------------------------------------------------------------#
+# Create database
+# ------------------------------------------------------------#
+  - name: Start MySQL service
+    become_user: root
+    service:
+        name: mysqld
+        state: started
+
+  - name: Create database
+    shell: |
+      bash -lc "rails db:create"
+      bash -lc "rails db:migrate"
+    args:
+      chdir: /home/ec2-user/raisetech-live8-sample-app
+      
+# ------------------------------------------------------------#
+# Compiling scss
+# ------------------------------------------------------------#
+
+  - name: Compiling scss
+    shell: bash -lc "rails assets:precompile"
+    args:
+      chdir: /home/ec2-user/raisetech-live8-sample-app
+      
+# ------------------------------------------------------------#
+# Install Nginx
+# ------------------------------------------------------------#
+  - name: Check if Nginx is installed
+    stat:
+      path: /etc/nginx/nginx.conf
+    register: nginx_check
+
+  - name: Install Nginx
+    become_user: root
+    shell: amazon-linux-extras install nginx1 -y
+    when: not nginx_check.stat.exists
+    
+  - name: Change directory authority
+    become_user: root
+    shell: |
+      cd /var/lib
+      chmod -R 775 nginx
+
+# ------------------------------------------------------------#
+# Add Nginx configuration file
+# ------------------------------------------------------------#
+  - name: Copy Nginx configuration file
+    become_user: root
+    template:
+      src: nginx.conf.j2  
+      dest: /etc/nginx/conf.d/nginx.conf
+    when: nginx_check.stat.exists
+  
+  - name: Modify nginx.conf
+    become_user: root
+    replace:
+      path: /etc/nginx/nginx.conf
+      regexp: 'user nginx;'
+      replace: 'user ec2-user;'
+      
+# ------------------------------------------------------------#
+# Start Nginx 
+# ------------------------------------------------------------#
+  - name: start nginx
+    become_user: root
+    service:
+        name: nginx
+        state: started
+    when: nginx_check.stat.exists
+
+# ------------------------------------------------------------#
+# Start Unicorn
+# ------------------------------------------------------------# 
+  - name: start unicorn
+    shell: bash -lc "bundle exec unicorn -c config/unicorn.rb -D"
+    args:
+      chdir: /home/ec2-user/raisetech-live8-sample-app
+
+        

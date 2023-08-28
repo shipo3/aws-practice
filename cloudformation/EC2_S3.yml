@@ -52,6 +52,13 @@ Resources:
       ImageId: !Ref Ec2ImageId
       KeyName: shipo4%
       InstanceType: t2.micro
+      BlockDeviceMappings:
+        - DeviceName: /dev/xvda
+          Ebs:
+            VolumeType: gp2
+            VolumeSize: '16'
+            DeleteOnTermination: 'false'
+            Encrypted: 'true'
       NetworkInterfaces:
         - AssociatePublicIpAddress: true
           DeviceIndex: 0
@@ -64,6 +71,14 @@ Resources:
       Tags:
         - Key: Name
           Value: CFn-ec2
+# ------------------------------------------------------------#
+# EIP Association
+# ------------------------------------------------------------#
+  IPAssoc:
+        Type: AWS::EC2::EIPAssociation
+        Properties:
+            InstanceId: !Ref EC2Instance1
+            EIP: 52.69.186.67
 # ------------------------------------------------------------#
 # S3 Create
 # ------------------------------------------------------------#

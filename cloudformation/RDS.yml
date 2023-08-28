@@ -67,6 +67,7 @@ Resources:
       Engine: mysql
       EngineVersion: !Ref EngineVersion
       DBInstanceClass: !Ref InstanceClass
+      DBInstanceIdentifier: CFn-rds
       AllocatedStorage: !Ref StorageSize
       StorageType: !Ref StorageType
       DBName: CFn_rds

@@ -1,6 +1,10 @@
 version: 2.1
 orbs:
   python: circleci/python@2.0.3
+  aws-cli: circleci/aws-cli@3.1
+  ansible-playbook: orbss/ansible-playbook@0.0.5
+  ruby: circleci/ruby@2.0.1
+  
 jobs:
   cfn-lint:
     executor: python/default
@@ -10,8 +14,97 @@ jobs:
       - run:
           name: run cfn-lint
           command: |
-            cfn-lint -i W3002 -t lecture10/*.yml
+            cfn-lint -i W3002 -t cloudformation/*.yml
+            
+  execute-cfn:
+    executor: aws-cli/default
+    steps:
+      - checkout
+      - aws-cli/setup:
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-region: AWS_DEFAULT_REGION
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+      - run:
+          name: deploy cfn
+          command: |
+            set -x
+            aws cloudformation deploy --stack-name circleci-vpc --template-file cloudformation/Network.yml
+            aws cloudformation deploy --stack-name circleci-ec2 --template-file cloudformation/EC2_S3.yml
+            aws cloudformation deploy --stack-name circleci-rds --template-file cloudformation/RDS.yml
+            aws cloudformation deploy --stack-name circleci-alb --template-file cloudformation/ALB.yml
+      - run:
+          name: pwd
+          command: pwd
+          
+  execute-ansible:
+    executor: ansible-playbook/default
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "05:63:33:68:59:f9:6e:c7:6d:fe:58:aa:d7:cf:fa:6f"
+      - ansible-playbook/install:
+          version: 2.9.23
+      - ansible-playbook/playbook:
+          playbook: ansible/playbook.yml
+          playbook-options: '-i ansible/inventory'
+      
+      # 鍵の生成
+      - run:
+          name: Generate SSH Key
+          command: |
+            echo "yes" | ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa_serverspec -N ""
+            chmod 600 /home/circleci/.ssh/id_rsa_serverspec
+            echo "Generated SSH keys:"
+            ls ~/.ssh/id_rsa*
+
+      # Ansibleで公開鍵をEC2のauthorized_keysに追加
+      - run:
+          name: Add SSH key to EC2
+          command: |
+            ansible-playbook -i '52.69.186.67,' ansible/add_key.yml
+      
+      # Serverspecにて使用するためCircleCIワークスペースに保存
+      - persist_to_workspace:
+          root: ~/.ssh/
+          paths:
+            - id_rsa_serverspec
+          
+  execute-serverspec:
+    executor: ruby/default
+    steps:
+      - checkout
+      
+      #Serverspecジョブで鍵を使用
+      - attach_workspace:
+          at: /home/circleci/.ssh/
+      - run:
+          name: Set correct permissions for SSH key
+          command: |
+            chmod 600 /home/circleci/.ssh/id_rsa_serverspec
+
+      - run:
+          name: install serverspecs
+          command: |
+            gem install serverspec
+            gem install ed25519 bcrypt_pbkdf
+      - run: 
+          name: execute serverspece
+          command: |
+            cd serverspec
+            rake spec
+            
 workflows:
   raisetech:
     jobs:
       - cfn-lint
+      - execute-cfn:
+          requires:
+            - cfn-lint
+      - execute-ansible:
+          requires:
+            - execute-cfn
+      - execute-serverspec:
+          requires:
+            - execute-ansible
+      
